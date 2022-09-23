@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-
+//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 public class DeadWheel {
 
     private double ticksPer;
