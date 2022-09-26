@@ -10,7 +10,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name="Red Auto Warehouse",group="Autonomous")
+//@Autonomous(name="Red Auto Warehouse",group="Autonomous")
 public class ScrimRightAutototousTop extends LinearOpMode {
     ScrimRobot robot;
     String visionPlaceholder = "low";

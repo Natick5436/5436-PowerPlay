@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.teamcode.Hardware.Mecanum_Drive;
 import org.firstinspires.ftc.teamcode.Robots.ScrimRobot;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp",group="TeleOp")
+//@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp",group="TeleOp")
 public class TeleOp extends LinearOpMode {
     ScrimRobot robot;
 
