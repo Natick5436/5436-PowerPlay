@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Official;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Hardware.Mecanum_Drive;
 import org.firstinspires.ftc.teamcode.Robots.Mark11;
 import org.firstinspires.ftc.teamcode.Robots.Mark12;
 
@@ -38,22 +39,18 @@ public class DavidJamesLearningTime extends LinearOpMode {
             }else{
                 robot.lF.setPower(0);
             }
-            if(gamepad1.b){
-                robot.lB.setPower(0.2);
-            }else{
-                robot.lB.setPower(0);
+
+            if ((gamepad1.right_trigger - gamepad1.left_trigger) != 0) {
+                robot.SimpleStrafe(drivePower * (gamepad1.right_trigger - gamepad1.left_trigger));
+            } else {
+                    robot.lF.setPower(-drivePower * gamepad1.left_stick_y);
+                    robot.lB.setPower(-drivePower * gamepad1.left_stick_y);
+                    robot.rF.setPower(-drivePower * gamepad1.right_stick_y);
+                    robot.rB.setPower(-drivePower * gamepad1.right_stick_y);
+                    robot.setStatus(Mecanum_Drive.Status.DRIVING);
             }
-            if(gamepad1.x){
-                robot.rF.setPower(0.2);
-            }else{
-                robot.rF.setPower(0);
-            }
-            if(gamepad1.y){
-                robot.rB.setPower(0.2);
-            }else{
-                robot.rB.setPower(0);
-            }
-            robot.disableBrakes();
+
+
 
 
         }

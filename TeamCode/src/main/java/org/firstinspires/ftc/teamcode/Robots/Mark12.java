@@ -1,14 +1,21 @@
 package org.firstinspires.ftc.teamcode.Robots;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.util.ReadWriteFile;
 
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import org.firstinspires.ftc.teamcode.Hardware.DeadWheel;
 import org.firstinspires.ftc.teamcode.Hardware.Mecanum_Drive;
+import org.firstinspires.ftc.teamcode.Hardware.REV_IMU;
 import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.TwoWheelOdometry;
+
+import java.io.File;
 
 public class Mark12 extends Mecanum_Drive{
     public static final double driveWheelRadius = 0.05;
@@ -29,9 +36,6 @@ public class Mark12 extends Mecanum_Drive{
 
     public boolean[][] obstacles;
     public TwoWheelOdometry odo;
-// David Code
-//    public Servo servo1;
-//    String servo1Init = "servo1";
 
     public CRServo centerServo;
     String centerServoInit = "centerServo";
@@ -58,6 +62,23 @@ public class Mark12 extends Mecanum_Drive{
         super(ln.hardwareMap.dcMotor.get("lF")/*lF*/, ln.hardwareMap.dcMotor.get("lB")/*lB*/, ln.hardwareMap.dcMotor.get("rF")/*rF*/, ln.hardwareMap.dcMotor.get("rB")/*rB*/, DcMotor.RunMode.RUN_USING_ENCODER);
         setMeasurements(driveWheelRadius, driveLengthX, driveLengthY, driveMotorMaxRPM);
         attachLinearOpMode(ln);
+
+        REV_IMU imu = new REV_IMU(ln, "imu", 1, initialAngle);
+
+        File horizontalRadiusFile = AppUtil.getInstance().getSettingsFile("horizontalRadius.txt");
+        File verticalRadiusFile = AppUtil.getInstance().getSettingsFile("verticalRadius.txt");
+        double horizontalRadius = Double.parseDouble(ReadWriteFile.readFile(horizontalRadiusFile).trim());
+        double verticalRadius = Double.parseDouble(ReadWriteFile.readFile(verticalRadiusFile).trim());
+
+        armEncoderDiff = 0; //Integer.parseInt(ReadWriteFile.readFile(armEncoderFile).trim());
+        odo = new TwoWheelOdometry(ln, new DeadWheel(lF, 0.0508, 8192, -1), new DeadWheel(deadMotor, 0.0508, 8192, -1), imu, horizontalRadius, verticalRadius, initialX, initialY);
+
+
+        odo.start();
+        attachAngleTracker(imu);
+
+
+
 
         liftMotor = ln.hardwareMap.dcMotor.get(liftMotorInit);
         angleMotor = ln.hardwareMap.dcMotor.get(angleMotorInit);

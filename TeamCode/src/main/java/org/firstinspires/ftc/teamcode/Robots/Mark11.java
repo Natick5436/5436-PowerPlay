@@ -17,9 +17,6 @@ public class Mark11 extends Mecanum_Drive{
     public static final double driveMotorMaxRPM = 369.75;
 
     //4
-    public final double OUTTAKECLOSED = 0.40;
-    public final double OUTTAKEMIDDLE = 0.30;
-    public final double OUTTAKEOPEN = 0;
 
     public DcMotor liftMotor;
     String liftMotorInit = "liftMotor";
@@ -29,7 +26,6 @@ public class Mark11 extends Mecanum_Drive{
 
     public boolean[][] obstacles;
     public TwoWheelOdometry odo;
-
 
     public CRServo centerServo;
     String centerServoInit = "centerServo";
@@ -83,6 +79,8 @@ public class Mark11 extends Mecanum_Drive{
         leftGrabber.setDirection(CRServo.Direction.REVERSE);
         rightGrabber.setDirection(CRServo.Direction.FORWARD);
 
+        lB.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
 
         angleMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -101,8 +99,8 @@ public class Mark11 extends Mecanum_Drive{
     }
 
     public void SimpleStrafe(double power){
-        lF.setPower(Range.clip(power, -1, 1));
-        lB.setPower(Range.clip(-power, -1, 1));
+        lF.setPower(Range.clip(-power, -1, 1));
+        lB.setPower(Range.clip(power, -1, 1));
         rF.setPower(Range.clip(-power, -1, 1));
         rB.setPower(Range.clip(power, -1, 1));
     }

@@ -195,11 +195,8 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("leftBumper", gamepad2.left_bumper);
             telemetry.addData("power", robot.centerServo.getPower());
 
-
-            telemetry.addData("center", robot.centerServo.getPower());
-            telemetry.addData("+leftTrigger", robot.centerServo.getPower());
-
-            telemetry.addData("liftMotor pos:", robot.liftMotor.getCurrentPosition());
+            telemetry.addData("armPos", robot.liftMotor.getTargetPosition());
+            telemetry.addData("armPos", robot.liftMotor.getCurrentPosition());
 
 
 
