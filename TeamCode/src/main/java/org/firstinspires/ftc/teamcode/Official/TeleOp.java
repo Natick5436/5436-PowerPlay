@@ -5,13 +5,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Hardware.Mecanum_Drive;
 import org.firstinspires.ftc.teamcode.Robots.Mark11;
+import org.firstinspires.ftc.teamcode.Robots.Mark12;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp",group="TeleOp")
 public class TeleOp extends LinearOpMode {
-    Mark11 robot;
+    Mark12 robot;
 
     public void runOpMode() {
-        robot = new Mark11(this, /*Mark_9.getSavedX()*/0, /*Mark_9.getSavedY()*/0, Math.PI / 2);
+        robot = new Mark12(this, /*Mark_9.getSavedX()*/0, /*Mark_9.getSavedY()*/0, Math.PI / 2);
 
         double drivePower = 0.2;
         boolean bumperDown = false;
@@ -161,6 +162,7 @@ public class TeleOp extends LinearOpMode {
                 robot.centerServo.setPower(0);
             }
 
+
             if(gamepad1.a && gamepad1.b){
                 for(int i=0; i<5;i++){
                     robot.lF.setPower(0.15);
@@ -180,10 +182,10 @@ public class TeleOp extends LinearOpMode {
             //telemetry.addData("Raw IMU", ((REV_IMU)robot.getAngleTracker()).imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS));
 
 
-            //telemetry.addData("Horizontal", robot.odo.h.distanceTraveled());
-            //telemetry.addData("Vertical", robot.odo.v.distanceTraveled());
-            //telemetry.addData("Angle", robot.getAngle());
-            //telemetry.addData("Position", "X:"+robot.getX()+" Y:"+robot.getY());
+            telemetry.addData("Horizontal", robot.odo.h.distanceTraveled());
+            telemetry.addData("Vertical", robot.odo.v.distanceTraveled());
+            telemetry.addData("Angle", robot.getAngle());
+            telemetry.addData("Position", "X:"+robot.getX()+" Y:"+robot.getY());
 
             telemetry.addData("fastMode",fastMode);
             telemetry.addData("lb", robot.lB.getPower());
@@ -191,9 +193,9 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("lF", robot.lF.getPower());
             telemetry.addData("rF", robot.rF.getPower());
 
-            telemetry.addData("leftTrigger", gamepad2.left_trigger);
-            telemetry.addData("leftBumper", gamepad2.left_bumper);
-            telemetry.addData("power", robot.centerServo.getPower());
+//            telemetry.addData("leftTrigger", gamepad2.left_trigger);
+//            telemetry.addData("leftBumper", gamepad2.left_bumper);
+//            telemetry.addData("power", robot.centerServo.getPower());
 
             telemetry.addData("armPos", robot.liftMotor.getTargetPosition());
             telemetry.addData("armPos", robot.liftMotor.getCurrentPosition());

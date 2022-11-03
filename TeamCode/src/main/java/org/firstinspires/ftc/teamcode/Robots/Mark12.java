@@ -66,16 +66,22 @@ public class Mark12 extends Mecanum_Drive{
         REV_IMU imu = new REV_IMU(ln, "imu", 1, initialAngle);
 
         File horizontalRadiusFile = AppUtil.getInstance().getSettingsFile("horizontalRadius.txt");
+
         File verticalRadiusFile = AppUtil.getInstance().getSettingsFile("verticalRadius.txt");
-        double horizontalRadius = Double.parseDouble(ReadWriteFile.readFile(horizontalRadiusFile).trim());
-        double verticalRadius = Double.parseDouble(ReadWriteFile.readFile(verticalRadiusFile).trim());
+        //double horizontalRadius = Double.parseDouble(ReadWriteFile.readFile(horizontalRadiusFile).trim());
+        //double verticalRadius = Double.parseDouble(ReadWriteFile.readFile(verticalRadiusFile).trim());
+
+        double horizontalRadius = 0.0508/2;
+        double verticalRadius = 0.0508/2;
 
         armEncoderDiff = 0; //Integer.parseInt(ReadWriteFile.readFile(armEncoderFile).trim());
-        odo = new TwoWheelOdometry(ln, new DeadWheel(lF, 0.0508, 8192, -1), new DeadWheel(deadMotor, 0.0508, 8192, -1), imu, horizontalRadius, verticalRadius, initialX, initialY);
+        odo = new TwoWheelOdometry(ln, new DeadWheel(rF, 0.0508, 8192, -1), new DeadWheel(rB, 0.0508, 8192, -1), imu, horizontalRadius, verticalRadius, initialX, initialY);
 
 
         odo.start();
         attachAngleTracker(imu);
+        attachPositionTracker(odo);
+        enableBrakes();
 
 
 

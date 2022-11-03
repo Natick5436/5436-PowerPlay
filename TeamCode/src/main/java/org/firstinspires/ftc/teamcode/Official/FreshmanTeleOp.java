@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.Official;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Hardware.Mecanum_Drive;
 import org.firstinspires.ftc.teamcode.Robots.FreshmanBot;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="FreshmanTeleOp",group="TeleOp")
+@Disabled
 public class FreshmanTeleOp extends LinearOpMode {
     FreshmanBot robot;
 

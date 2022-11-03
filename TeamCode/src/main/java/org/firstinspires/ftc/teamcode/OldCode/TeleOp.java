@@ -181,6 +181,8 @@ public class TeleOp extends LinearOpMode {
             //telemetry.addData("Vertical", robot.odo.v.distanceTraveled());
             //telemetry.addData("Angle", robot.getAngle());
             //telemetry.addData("Position", "X:"+robot.getX()+" Y:"+robot.getY());
+
+
             telemetry.addData("carouselSpeed", carouselSpeed);
             telemetry.addData("Arm position", robot.arm.getTargetPosition());
             telemetry.addData("down",gamepad1.dpad_down);

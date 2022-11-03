@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.Official;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Robots.FreshmanBot;
 import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.BarcodeScanner;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name="FreshmanAuto",group="Autonomous")
+@Disabled
 public class FreshmanAuto extends LinearOpMode {
     FreshmanBot robot;
 
