@@ -309,10 +309,10 @@ public class Mecanum_Drive extends Robot{
 
     //sets power to all the motors at once. Used for any purpose you can dream up.
     // Indexes of parameter
-    // 0: leftFront
-    // 1: rightFront
-    // 2: leftBack
-    // 3: rightBack
+    // 0: leftBack
+    // 1: leftFront
+    // 2: rightBack
+    // 3: rightFront
     public void setPowerAll(double[] powers){
         for(int i=0; i<wheelArray.length; i++){
             wheelArray[i].setPower(powers[i]);
