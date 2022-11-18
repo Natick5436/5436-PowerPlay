@@ -39,11 +39,11 @@ public class ResetProgram extends LinearOpMode {
         while (opModeIsActive()) {
 
             if(gamepad2.dpad_up){
-                robot.angleMotor.setPower(0.3);
+                robot.liftMotor.setPower(0.3);
             }if(gamepad2.dpad_down){
-                robot.angleMotor.setPower(-0.3);
+                robot.liftMotor.setPower(-0.3);
             }else{
-                robot.angleMotor.setPower(0);
+                robot.liftMotor.setPower(0);
             }
 
             //telemetry.addData("Raw IMU", ((REV_IMU)robot.getAngleTracker()).imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS));
