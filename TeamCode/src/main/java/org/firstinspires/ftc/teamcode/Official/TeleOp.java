@@ -71,11 +71,12 @@ public class TeleOp extends LinearOpMode {
             }
             backDown = gamepad1.back;
 
-            if(gamepad1.dpad_up && robot.liftMotor.getTargetPosition()<5080){
-                robot.liftMotor.setTargetPosition(robot.liftMotor.getTargetPosition()+60);
+            //5080 before
+            if(gamepad1.dpad_up && robot.liftMotor.getTargetPosition()<12080){
+                robot.liftMotor.setTargetPosition(robot.liftMotor.getTargetPosition()+90);
             }if(gamepad1.dpad_down && robot.liftMotor.getTargetPosition()>0){
 
-                robot.liftMotor.setTargetPosition(robot.liftMotor.getTargetPosition()-60);
+                robot.liftMotor.setTargetPosition(robot.liftMotor.getTargetPosition()-90);
             }
             /*
             if (System.currentTimeMillis() - liftTime > 700) {
@@ -106,13 +107,14 @@ public class TeleOp extends LinearOpMode {
             }*/
 
             if(gamepad2.dpad_up){
-                robot.angleMotor.setTargetPosition(robot.angleMotor.getTargetPosition()+3);
+                robot.angleMotor.setTargetPosition(robot.angleMotor.getTargetPosition()+13);
             }if(gamepad2.dpad_down){
-                robot.angleMotor.setTargetPosition(robot.angleMotor.getTargetPosition()-3);
+                robot.angleMotor.setTargetPosition(robot.angleMotor.getTargetPosition()-13
+                );
             }
 
             /***
-            if (System.currentTimeMillis() - angleTime > 700) {
+            if (System.currentTimeMillis() - angleTime > 700) {c
                 int armEncoderDiff = robot.getArmEncoderDiff();
                 int anglePosition = robot.angleMotor.getTargetPosition();
                 if(gamepad2.dpad_left && anglePosition < 30000 /*+ armEncoderDiff){

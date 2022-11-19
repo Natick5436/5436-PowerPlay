@@ -3,6 +3,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Robots.Mark11;
+import org.firstinspires.ftc.teamcode.Robots.Mark12;
 import org.firstinspires.ftc.teamcode.Robots.ScrimRobot;
 import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.BarcodeScanner;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -10,16 +11,16 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name="FirstAuto",group="Autonomous")
+@Autonomous(name="UseThisAuto",group="Autonomous")
 public class FirstAuto extends LinearOpMode {
-    Mark11 robot;
+    Mark12 robot;
 
     //OpenCvInternalCamera phoneCam;
     //BarcodeScanner pipeline;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot = new Mark11(this, /*Mark_9.getSavedX()*/3.3528, /*Mark_9.getSavedY()*/2.1336, 0);
+        robot = new Mark12(this, /*Mark_9.getSavedX()*/3.3528, /*Mark_9.getSavedY()*/2.1336, 0);
 
         robot.disableBrakes();
         /*String visionPlaceholder = "low";
@@ -60,8 +61,16 @@ public class FirstAuto extends LinearOpMode {
 
         waitForStart();
 
+        robot.liftMotor.setPower(0.8);
+        robot.angleMotor.setPower(0.8);
+
+        robot.liftMotor.setTargetPosition(200);
+        robot.angleMotor.setTargetPosition(75);
+        sleep(1500);
+
         robot.SimpleForward(0.1);
         sleep(985);
+        robot.SimpleForward(0.1);
         robot.enableBrakes();
 
         robot.stopDrive();
