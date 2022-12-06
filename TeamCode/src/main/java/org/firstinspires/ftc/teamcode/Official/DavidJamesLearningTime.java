@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.Official;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Hardware.Mecanum_Drive;
 import org.firstinspires.ftc.teamcode.Robots.Mark11;
 import org.firstinspires.ftc.teamcode.Robots.Mark12;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="LearningTeleOp",group="TeleOp")
+@Disabled
 public class DavidJamesLearningTime extends LinearOpMode {
     Mark12 robot;
 
