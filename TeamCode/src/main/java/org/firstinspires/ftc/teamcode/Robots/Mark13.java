@@ -28,14 +28,22 @@ public class Mark13 extends Mecanum_Drive{
     public final double OUTTAKEMIDDLE = 0.30;
     public final double OUTTAKEOPEN = 0;
 
-    public DcMotor liftMotor;
-    String liftMotorInit = "liftMotor";
-
-    public DcMotor angleMotor;
-    String angleMotorInit = "angleMotor";
-
     public boolean[][] obstacles;
     public TwoWheelOdometry odo;
+
+    public DcMotor leftAxis;
+    String leftAxisInit = "leftAxis";
+
+    public DcMotor rightAxis;
+    String rightAxisInit = "rightAxis";
+
+    public DcMotor leftPulley;
+    String leftPulleyInit = "leftPulley";
+
+    public DcMotor rightPulley;
+    String rightPulleyInit = "rightPulley";
+
+
 
     public CRServo centerServo;
     String centerServoInit = "centerServo";
@@ -46,14 +54,13 @@ public class Mark13 extends Mecanum_Drive{
     public CRServo rightGrabber;
     String rightGrabberInit = "rightGrabber";
 
+    public Servo pulleyServo;
+    String pulleyServoInit = "pulleyServo";
 
     public final static double ARM_HOME = 0.0;
     public final static double ARM_MIN_RANGE = 0.0;
     public final static double ARM_MAX_RANGE = 1.0;
 
-
-    public DcMotor deadMotor;
-    String motorInit = "deadMotor";
 
     public static int armEncoderDiff;
     public static int angleEncoderDiff;;
@@ -72,45 +79,57 @@ public class Mark13 extends Mecanum_Drive{
         double verticalRadius = Double.parseDouble(ReadWriteFile.readFile(verticalRadiusFile).trim());
 
 
-        armEncoderDiff = 0; //Integer.parseInt(ReadWriteFile.readFile(armEncoderFile).trim());
+        //armEncoderDiff = 0; //Integer.parseInt(ReadWriteFile.readFile(armEncoderFile).trim());
         odo = new TwoWheelOdometry(ln, new DeadWheel(rF, 0.0508, 8192, -1), new DeadWheel(rB, 0.0508, 8192, -1), imu, horizontalRadius, verticalRadius, initialX, initialY);
         odo.start();
         attachAngleTracker(imu);
         attachPositionTracker(odo);
         enableBrakes();
 
-
-
-
-        liftMotor = ln.hardwareMap.dcMotor.get(liftMotorInit);
-        angleMotor = ln.hardwareMap.dcMotor.get(angleMotorInit);
-        //leftServo = ln.hardwareMap.servo.get(leftServoInit);
-
-        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        liftMotor.setTargetPosition(0);
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        angleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        angleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        angleMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        angleMotor.setTargetPosition(0);
-        angleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftAxis = ln.hardwareMap.dcMotor.get(leftAxisInit);
+        rightAxis = ln.hardwareMap.dcMotor.get(rightAxisInit);
+        leftPulley = ln.hardwareMap.dcMotor.get(leftPulleyInit);
+        rightPulley = ln.hardwareMap.dcMotor.get(rightPulleyInit);
 
         centerServo =ln.hardwareMap.crservo.get(centerServoInit);
         leftGrabber =ln.hardwareMap.crservo.get(leftGrabberInit);
         rightGrabber = ln.hardwareMap.crservo.get(rightGrabberInit);
+        pulleyServo = ln.hardwareMap.servo.get(pulleyServoInit);
 
 
-        leftGrabber.setDirection(CRServo.Direction.REVERSE);
-        rightGrabber.setDirection(CRServo.Direction.FORWARD);
+        /***Sets all motors to run on encoders***/
+        leftAxis.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftAxis.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftAxis.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftAxis.setTargetPosition(0);
+        leftAxis.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        leftAxis.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        rightAxis.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightAxis.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightAxis.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightAxis.setTargetPosition(0);
+        rightAxis.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        angleMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftPulley.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftPulley.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftPulley.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftPulley.setTargetPosition(0);
+        leftPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        leftPulley.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        rightPulley.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightPulley.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightPulley.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightPulley.setTargetPosition(0);
+        rightPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        leftAxis.setPower(0.4);
+        rightAxis.setPower(0.4);
+        leftPulley.setPower(0.4);
+        rightPulley.setPower(0.4);
 
         armEncoderDiff = 0;
         angleEncoderDiff = 0;
