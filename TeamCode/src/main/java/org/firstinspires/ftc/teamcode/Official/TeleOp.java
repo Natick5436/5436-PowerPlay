@@ -21,8 +21,8 @@ public class TeleOp extends LinearOpMode {
         boolean rightBumper = false;
         boolean backDown = false;
 
-        long liftTime = System.currentTimeMillis();
         long angleTime = System.currentTimeMillis();
+        long liftTime = System.currentTimeMillis();
 
         robot.disableBrakes();
 
@@ -38,7 +38,7 @@ public class TeleOp extends LinearOpMode {
                 drivePower = 0.2;
             } else {
 
-                drivePower = 0.08;
+                drivePower = 0.5;
             }
             if (!gamepad1.right_bumper && rightBumper) fastMode = !fastMode;
             rightBumper = gamepad1.right_bumper;
@@ -84,24 +84,59 @@ public class TeleOp extends LinearOpMode {
 //            backDown = gamepad1.back;
 
 
-            if(gamepad2.dpad_left){
-                robot.leftAxis.setTargetPosition(robot.leftAxis.getTargetPosition() + 4);
-                robot.rightAxis.setTargetPosition(robot.rightAxis.getTargetPosition() + 4);
+            /*if(gamepad2.dpad_left){
+                robot.leftAxis.setTargetPosition(robot.leftAxis.getTargetPosition() + 3);
+                robot.rightAxis.setTargetPosition(robot.rightAxis.getTargetPosition() + 3);
             }else if(gamepad2.dpad_right){
-                robot.leftAxis.setTargetPosition(robot.leftAxis.getTargetPosition() - 4);
-                robot.rightAxis.setTargetPosition(robot.rightAxis.getTargetPosition() - 4);
+                robot.leftAxis.setTargetPosition(robot.leftAxis.getTargetPosition() - 3);
+                robot.rightAxis.setTargetPosition(robot.rightAxis.getTargetPosition() - 3);
+            }*/
+
+            if (System.currentTimeMillis() - angleTime > 700) {
+                //int armEncoderDiff = robot.getArmEncoderDiff();
+                int leftAxisPosition = robot.leftAxis.getTargetPosition();
+                int rightAxisPosition = robot.rightAxis.getTargetPosition();
+                if(gamepad2.dpad_left && leftAxisPosition < 12000 /*+ armEncoderDiff*/){
+                    robot.leftAxis.setTargetPosition(leftAxisPosition + 400);
+                    robot.rightAxis.setTargetPosition(rightAxisPosition + 400);
+                    angleTime = System.currentTimeMillis();
+
+                }else if(gamepad2.dpad_right && leftAxisPosition > -100 /* + armEncoderDiff*/){
+                    robot.leftAxis.setTargetPosition(leftAxisPosition - 400);
+                    robot.rightAxis.setTargetPosition(rightAxisPosition - 400);
+                    angleTime = System.currentTimeMillis();
+
+                }
             }
 
+            if (System.currentTimeMillis() - liftTime > 500) {
+                //int armEncoderDiff = robot.getArmEncoderDiff();
+                int leftPulleyPosition = robot.leftAxis.getTargetPosition();
+                int rightPulleyPosition = robot.rightAxis.getTargetPosition();
+                if(gamepad2.dpad_up /*&& leftPulleyPosition < 12000 + armEncoderDiff*/){
+                    robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() + 400);
+                    robot.rightPulley.setTargetPosition(rightPulleyPosition + 400);
+                    liftTime = System.currentTimeMillis();
+
+                }else if(gamepad2.dpad_down && leftPulleyPosition > -100 /* + armEncoderDiff*/){
+                    robot.leftPulley.setTargetPosition(leftPulleyPosition - 400);
+                    robot.rightPulley.setTargetPosition(rightPulleyPosition - 400);
+                    liftTime = System.currentTimeMillis();
+
+                }
+            }
+
+            /*
             if(gamepad2.dpad_up){
-                robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() + 30);
-                robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() + 30);
+                robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() + 40);
+                robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() + 40);
             }else if(gamepad2.dpad_down){
-                robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() - 30);
-                robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() - 30);
+                robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() - 40);
+                robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() - 40);
                 if (robot.leftPulley.getTargetPosition()==0){
                     robot.pulleyServo.setPosition(robot.pulleyServo.getPosition() + 10);
                 }
-            }
+            }*/
 
 
 
@@ -118,10 +153,21 @@ public class TeleOp extends LinearOpMode {
                 robot.rightGrabber.setPower(0);
             }
 
+
             if(gamepad2.left_trigger>0){
-                robot.centerServo.setPower(0.25);
+                robot.leftClawSpinner.setPosition(robot.leftClawSpinner.getPosition()+0.006);
+                robot.rightClawSpinner.setPosition(robot.rightClawSpinner.getPosition()+0.006);
             }else if(gamepad2.right_trigger>0){
-                robot.centerServo.setPower(-0.25);
+                robot.leftClawSpinner.setPosition(robot.leftClawSpinner.getPosition()-0.006);
+                robot.rightClawSpinner.setPosition(robot.rightClawSpinner.getPosition()-0.006);
+            }
+
+
+
+            if(gamepad2.x){
+                robot.centerServo.setPower(0.4);
+            }else if(gamepad2.b){
+                robot.centerServo.setPower(-0.4);
             }else{
                 robot.centerServo.setPower(0);
             }
@@ -146,8 +192,8 @@ public class TeleOp extends LinearOpMode {
             //telemetry.addData("Raw IMU", ((REV_IMU)robot.getAngleTracker()).imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS));
 
 
-            telemetry.addData("Horizontal", robot.odo.h.distanceTraveled());
-            telemetry.addData("Vertical", robot.odo.v.distanceTraveled());
+            telemetry.addData("Horizontal", robot.getX());
+            telemetry.addData("Vertical", robot.getY());
             telemetry.addData("Angle", robot.getAngle());
             telemetry.addData("Position", "X:"+robot.getX()+" Y:"+robot.getY());
 
@@ -157,8 +203,11 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("lF", robot.lF.getPower());
             telemetry.addData("rF", robot.rF.getPower());
 
+            telemetry.addData("left pulley", robot.leftPulley.getTargetPosition());
+            telemetry.addData("right pulley", robot.rightPulley.getTargetPosition());
+            telemetry.addData("lift time", liftTime);
 
-
+            telemetry.addData("height", robot.leftPulley.getCurrentPosition());
 
             //telemetry.addData("Angle",robot.getAngle());
             telemetry.update();

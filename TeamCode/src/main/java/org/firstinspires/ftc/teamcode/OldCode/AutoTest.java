@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.OldCode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Robots.ScrimRobot;
@@ -10,7 +11,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name="Arm Test",group="Autonomous")
+@Disabled
 public class AutoTest extends LinearOpMode {
     ScrimRobot robot;
     String visionPlaceholder = "low";

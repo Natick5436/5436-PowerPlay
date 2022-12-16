@@ -21,13 +21,13 @@ public class TwoWheelOdometryCalibration extends LinearOpMode {
 
     public void runOpMode(){
         robot = new Mark13(this, 0, 0, 0);
-        TwoWheelOdometry odo = new TwoWheelOdometry(this, new DeadWheel(robot.rF, 0.0508, 8192, 1), new DeadWheel(robot.rB, 0.0508, 8192, 1), robot.getAngleTracker(), 1, 1, 1, 1);
+        TwoWheelOdometry odo = new TwoWheelOdometry(this, new DeadWheel(robot.lB, 0.0508, 8192, 1), new DeadWheel(robot.lF, 0.0508, 8192, 1), robot.getAngleTracker(), 1, 1, 1, 1);
 
         waitForStart();
         double lastH = odo.h.distanceTraveled();
         double lastV = odo.v.distanceTraveled();
         robot.inverseKinematics(new double[]{0, 0, 1});
-        robot.turn(0.05);
+        robot.turn(0.5);
         sleep(2500);
         robot.stopDrive();
 

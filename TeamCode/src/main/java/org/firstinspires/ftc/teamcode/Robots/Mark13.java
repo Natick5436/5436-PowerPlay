@@ -45,8 +45,11 @@ public class Mark13 extends Mecanum_Drive{
 
 
 
-    public CRServo centerServo;
-    String centerServoInit = "centerServo";
+    public Servo leftClawSpinner;
+    String leftClawSpinnerInit = "leftClawSpinner";
+
+    public Servo rightClawSpinner;
+    String rightClawSpinnerInit = "rightClawSpinner";
 
     public CRServo leftGrabber;
     String leftGrabberInit = "leftGrabber";
@@ -57,6 +60,9 @@ public class Mark13 extends Mecanum_Drive{
     public Servo pulleyServo;
     String pulleyServoInit = "pulleyServo";
 
+    public CRServo centerServo;
+    String centerServoInit = "centerServo";
+
     public final static double ARM_HOME = 0.0;
     public final static double ARM_MIN_RANGE = 0.0;
     public final static double ARM_MAX_RANGE = 1.0;
@@ -66,7 +72,7 @@ public class Mark13 extends Mecanum_Drive{
     public static int angleEncoderDiff;;
 
     public Mark13(LinearOpMode ln, double initialX, double initialY, double initialAngle) {
-        super(ln.hardwareMap.dcMotor.get("lF")/*lF*/, ln.hardwareMap.dcMotor.get("lB")/*lB*/, ln.hardwareMap.dcMotor.get("rF")/*rF*/, ln.hardwareMap.dcMotor.get("rB")/*rB*/, DcMotor.RunMode.RUN_USING_ENCODER);
+        super(ln.hardwareMap.dcMotor.get("lF")/*lF*/, ln.hardwareMap.dcMotor.get("lB")/*lB*/, ln.hardwareMap.dcMotor.get("rF")/*rF*/, ln.hardwareMap.dcMotor.get("rB")/*rB*/, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         setMeasurements(driveWheelRadius, driveLengthX, driveLengthY, driveMotorMaxRPM);
         switchReverseSide();
         attachLinearOpMode(ln);
@@ -80,20 +86,38 @@ public class Mark13 extends Mecanum_Drive{
 
 
         //armEncoderDiff = 0; //Integer.parseInt(ReadWriteFile.readFile(armEncoderFile).trim());
-        odo = new TwoWheelOdometry(ln, new DeadWheel(rF, 0.0508, 8192, -1), new DeadWheel(rB, 0.0508, 8192, -1), imu, horizontalRadius, verticalRadius, initialX, initialY);
+        odo = new TwoWheelOdometry(ln, new DeadWheel(lB, 0.0508, 8192, -1), new DeadWheel(lF, 0.0508, 8192, -1), imu, horizontalRadius, verticalRadius, initialX, initialY);
         odo.start();
         attachAngleTracker(imu);
         attachPositionTracker(odo);
         enableBrakes();
+
+        obstacles = new boolean[80][120];
+        for (int x = 0; x < 79; x++) {
+            for (int y = 0; y < 119; y++) {
+                obstacles[x][y] = false;
+            }
+        }
+        attachObstacles(obstacles, 2.3876, 3.6068);
+        createBuffers(0.30546);
+        setPathFollowingParameters(2, Math.PI / 2, 0.3, 0);
+
+
 
         leftAxis = ln.hardwareMap.dcMotor.get(leftAxisInit);
         rightAxis = ln.hardwareMap.dcMotor.get(rightAxisInit);
         leftPulley = ln.hardwareMap.dcMotor.get(leftPulleyInit);
         rightPulley = ln.hardwareMap.dcMotor.get(rightPulleyInit);
 
-        centerServo =ln.hardwareMap.crservo.get(centerServoInit);
+        leftClawSpinner = ln.hardwareMap.servo.get(leftClawSpinnerInit);
+        rightClawSpinner = ln.hardwareMap.servo.get(rightClawSpinnerInit);
+        rightClawSpinner.setDirection(Servo.Direction.REVERSE);
+
+        centerServo = ln.hardwareMap.crservo.get(centerServoInit);
+
         leftGrabber =ln.hardwareMap.crservo.get(leftGrabberInit);
         rightGrabber = ln.hardwareMap.crservo.get(rightGrabberInit);
+        rightGrabber.setDirection(DcMotorSimple.Direction.REVERSE);
         pulleyServo = ln.hardwareMap.servo.get(pulleyServoInit);
 
 
@@ -104,13 +128,13 @@ public class Mark13 extends Mecanum_Drive{
         leftAxis.setTargetPosition(0);
         leftAxis.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        leftAxis.setDirection(DcMotorSimple.Direction.REVERSE);
-
         rightAxis.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightAxis.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightAxis.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightAxis.setTargetPosition(0);
         rightAxis.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        rightAxis.setDirection(DcMotorSimple.Direction.REVERSE);
 
         leftPulley.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftPulley.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -131,27 +155,12 @@ public class Mark13 extends Mecanum_Drive{
         leftPulley.setPower(0.4);
         rightPulley.setPower(0.4);
 
+
         armEncoderDiff = 0;
         angleEncoderDiff = 0;
 
 
     }
-
-    public void SimpleForward(double power){
-        lF.setPower(power);
-        lB.setPower(power);
-        rF.setPower(power);
-        rB.setPower(power);
-    }
-
-    public void SimpleStrafe(double power){
-        lF.setPower(Range.clip(-power, -0.5, 0.5));
-        lB.setPower(Range.clip(power, -0.5, 0.5));
-        rF.setPower(Range.clip(power, -0.5, 0.5));
-        rB.setPower(Range.clip(power, -0.5, 0.5));
-    }
-
-
 
     public int getArmEncoderDiff() {
         return armEncoderDiff;

@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Robots.Mark11;
 import org.firstinspires.ftc.teamcode.Robots.Mark12;
+import org.firstinspires.ftc.teamcode.Robots.Mark13;
 import org.firstinspires.ftc.teamcode.Robots.ScrimRobot;
 import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.BarcodeScanner;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -12,16 +13,16 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
 //This auto is funni and completely stupid and got us 60 points
-@Autonomous(name="TestAuto",group="Autonomous")
+@Autonomous(name="TesterAuto",group="Autonomous")
 public class Auto extends LinearOpMode {
-    Mark12 robot;
+    Mark13 robot;
 
     //OpenCvInternalCamera phoneCam;
     //BarcodeScanner pipeline;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot = new Mark12(this, /*Mark_9.getSavedX()*/3.3528, /*Mark_9.getSavedY()*/2.1336, 0);
+        robot = new Mark13(this, /*Mark_9.getSavedX()*/0, /*Mark_9.getSavedY()*/0, 0);
 
         robot.disableBrakes();
         /*String visionPlaceholder = "low";
@@ -49,24 +50,18 @@ public class Auto extends LinearOpMode {
         });*/
 
         while (!isStarted()) {
-            //telemetry.addData("Analysis", pipeline.getAnalysis());
-            //telemetry.addData("Position", pipeline.position);
-//            telemetry.addData("x", robot.getX());
-//
-//            robot.maneuverToPosition(1, 1, 0.3, 0);
-//
-//            telemetry.update();
-//            if (isStopRequested()) {
-//                return;
-//            }
-
+            telemetry.addData("x", robot.getX());
+            telemetry.addData("y", robot.getY());
+            telemetry.update();
+            if (isStopRequested()) {
+                return;
+            }
         }
 
         waitForStart();
 
-        robot.SimpleForward(0.1);
-        sleep(985);
-        robot.enableBrakes();
+        robot.maneuverToPosition(1, 1, 0.4, 0);
+
 
         robot.stopDrive();
 
