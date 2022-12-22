@@ -6,13 +6,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Hardware.Mecanum_Drive;
 import org.firstinspires.ftc.teamcode.Robots.Mark11;
+import org.firstinspires.ftc.teamcode.Robots.Mark13;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Reset",group="TeleOp")
 public class ResetProgram extends LinearOpMode {
-    Mark11 robot;
+    Mark13 robot;
 
     public void runOpMode() {
-        robot = new Mark11(this, /*Mark_9.getSavedX()*/0, /*Mark_9.getSavedY()*/0, Math.PI / 2);
+        robot = new Mark13(this, /*Mark_9.getSavedX()*/0, /*Mark_9.getSavedY()*/0, Math.PI / 2);
 
         double drivePower = 0.2;
         boolean bumperDown = false;
@@ -24,11 +25,6 @@ public class ResetProgram extends LinearOpMode {
         long angleTime = System.currentTimeMillis();
 
 
-        robot.angleMotor.setPower(0.15);
-
-        robot.liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.disableBrakes();
-
         //Pat's test code
         //leftServoPosition = Range.clip(leftServoPosition, robot.ARM_MIN_RANGE,robot.ARM_MAX_RANGE);
         //robot.leftServo.setPosition(leftServoPosition);
@@ -39,11 +35,13 @@ public class ResetProgram extends LinearOpMode {
         while (opModeIsActive()) {
 
             if(gamepad2.dpad_up){
-                robot.liftMotor.setPower(0.3);
-            }if(gamepad2.dpad_down){
-                robot.liftMotor.setPower(-0.3);
-            }else{
-                robot.liftMotor.setPower(0);
+                robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() + 5);
+                robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() + 5);
+
+            }else if(gamepad2.dpad_down){
+                robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() - 5);
+                robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() - 5);
+
             }
 
             //telemetry.addData("Raw IMU", ((REV_IMU)robot.getAngleTracker()).imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS));
@@ -64,8 +62,8 @@ public class ResetProgram extends LinearOpMode {
             telemetry.addData("leftBumper", gamepad2.left_bumper);
             telemetry.addData("power", robot.centerServo.getPower());
 
-            telemetry.addData("armPos", robot.liftMotor.getTargetPosition());
-            telemetry.addData("armPos", robot.liftMotor.getCurrentPosition());
+            telemetry.addData("armPos", robot.leftPulley.getTargetPosition());
+
 
 
 

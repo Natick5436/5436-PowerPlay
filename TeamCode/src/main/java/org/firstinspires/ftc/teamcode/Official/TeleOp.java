@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Official;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Hardware.Mecanum_Drive;
@@ -23,25 +24,33 @@ public class TeleOp extends LinearOpMode {
 
         long angleTime = System.currentTimeMillis();
         long liftTime = System.currentTimeMillis();
+        long speedTime = System.currentTimeMillis();
 
         robot.disableBrakes();
 
-
+        robot.leftPulley.setPower(0.8);
+        robot.rightPulley.setPower(0.8);
 
         waitForStart();
+
+        robot.rB.setDirection(DcMotorSimple.Direction.FORWARD);
+        robot.lB.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.rF.setDirection(DcMotorSimple.Direction.FORWARD);
+        robot.lF.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         while (opModeIsActive()) {
 
             /**GENERAL MOVEMENT**/
             if (fastMode) {
-                drivePower = 0.2;
+                drivePower = 0.7;
             } else {
 
                 drivePower = 0.5;
             }
-            if (!gamepad1.right_bumper && rightBumper) fastMode = !fastMode;
-            rightBumper = gamepad1.right_bumper;
+            if (!gamepad1.right_bumper && System.currentTimeMillis() - speedTime > 700){
+                fastMode = !fastMode;
+            }
             if (gamepad1.left_bumper) {
                 if (Math.abs(gamepad1.right_stick_x) < 0.25) {
                     robot.angleStrafe(drivePower * Math.hypot(-gamepad1.left_stick_y, gamepad1.left_stick_x), Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x));
@@ -51,6 +60,10 @@ public class TeleOp extends LinearOpMode {
                 bumperDown = true;
             } else if (gamepad1.right_trigger>0 || gamepad1.left_trigger>0){
                 //robot.SimpleStrafe(drivePower * (gamepad1.right_trigger - gamepad1.left_trigger));
+                robot.rB.setDirection(DcMotorSimple.Direction.FORWARD);
+                robot.lB.setDirection(DcMotorSimple.Direction.FORWARD);
+                robot.rF.setDirection(DcMotorSimple.Direction.FORWARD);
+                robot.lF.setDirection(DcMotorSimple.Direction.FORWARD);
                 if(gamepad1.right_trigger>0){
                     robot.lF.setPower(gamepad1.right_trigger * drivePower);
                     robot.rF.setPower(gamepad1.right_trigger * drivePower);
@@ -62,6 +75,10 @@ public class TeleOp extends LinearOpMode {
                     robot.lB.setPower(gamepad1.left_trigger * drivePower);
                     robot.rB.setPower(gamepad1.left_trigger * drivePower);
                 }
+                robot.rB.setDirection(DcMotorSimple.Direction.FORWARD);
+                robot.lB.setDirection(DcMotorSimple.Direction.REVERSE);
+                robot.rF.setDirection(DcMotorSimple.Direction.FORWARD);
+                robot.lF.setDirection(DcMotorSimple.Direction.REVERSE);
             } else {
                 if (!bumperDown) {
                     robot.lF.setPower(drivePower * gamepad1.left_stick_y);
@@ -76,21 +93,8 @@ public class TeleOp extends LinearOpMode {
                     }
                 }
             }
-//            if (gamepad1.back && !backDown) {
-//                // robot.getPositionTracker().resetPosition(0.2032, 3.40995);
-//                //robot.getAngleTracker().resetAngle(Math.PI/2);.
-//                backDown = true;
-//            }
-//            backDown = gamepad1.back;
 
 
-            /*if(gamepad2.dpad_left){
-                robot.leftAxis.setTargetPosition(robot.leftAxis.getTargetPosition() + 3);
-                robot.rightAxis.setTargetPosition(robot.rightAxis.getTargetPosition() + 3);
-            }else if(gamepad2.dpad_right){
-                robot.leftAxis.setTargetPosition(robot.leftAxis.getTargetPosition() - 3);
-                robot.rightAxis.setTargetPosition(robot.rightAxis.getTargetPosition() - 3);
-            }*/
 
             if (System.currentTimeMillis() - angleTime > 700) {
                 //int armEncoderDiff = robot.getArmEncoderDiff();
@@ -114,13 +118,13 @@ public class TeleOp extends LinearOpMode {
                 //int armEncoderDiff = robot.getArmEncoderDiff();
                 int leftPulleyPosition = robot.leftAxis.getTargetPosition();
                 int rightPulleyPosition = robot.rightAxis.getTargetPosition();
-                if(gamepad2.dpad_up /*&& leftPulleyPosition < 12000 + armEncoderDiff*/){
+                if(gamepad2.dpad_up && leftPulleyPosition <= 11600 /*+ armEncoderDiff*/){
                     //change the 400s to change how much to pulleys goe each time
                     robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() + 400);
                     robot.rightPulley.setTargetPosition(rightPulleyPosition + 400);
                     liftTime = System.currentTimeMillis();
 
-                }else if(gamepad2.dpad_down && leftPulleyPosition > -100 /* + armEncoderDiff*/){
+                }else if(gamepad2.dpad_down && leftPulleyPosition >= 20 /* + armEncoderDiff*/){
                     robot.leftPulley.setTargetPosition(leftPulleyPosition - 400);
                     robot.rightPulley.setTargetPosition(rightPulleyPosition - 400);
                     liftTime = System.currentTimeMillis();
@@ -139,9 +143,6 @@ public class TeleOp extends LinearOpMode {
                     robot.pulleyServo.setPosition(robot.pulleyServo.getPosition() + 10);
                 }
             }*/
-
-
-
 
 
             if(gamepad2.left_bumper){
@@ -191,6 +192,7 @@ public class TeleOp extends LinearOpMode {
             }
 
 
+
             //telemetry.addData("Raw IMU", ((REV_IMU)robot.getAngleTracker()).imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS));
 
 
@@ -210,6 +212,12 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("lift time", liftTime);
 
             telemetry.addData("height", robot.leftPulley.getCurrentPosition());
+
+            telemetry.addData("lF", robot.lF.getDirection());
+            telemetry.addData("rF", robot.rF.getDirection());
+            telemetry.addData("lB", robot.lB.getDirection());
+            telemetry.addData("rB", robot.rB.getDirection());
+
 
             //telemetry.addData("Angle",robot.getAngle());
             telemetry.update();
