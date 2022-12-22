@@ -58,6 +58,7 @@ public class TeleOp extends LinearOpMode {
                     robot.turningStrafe(drivePower * Math.hypot(gamepad1.left_stick_y, gamepad1.left_stick_x), Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x), -gamepad1.right_stick_x);
                 }
                 bumperDown = true;
+                //CHANGES
             } else if (gamepad1.right_trigger>0 || gamepad1.left_trigger>0){
                 //robot.SimpleStrafe(drivePower * (gamepad1.right_trigger - gamepad1.left_trigger));
                 robot.rB.setDirection(DcMotorSimple.Direction.FORWARD);
