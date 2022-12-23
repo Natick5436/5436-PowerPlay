@@ -22,7 +22,7 @@ public class Auto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot = new Mark13(this, /*Mark_9.getSavedX()*/0, /*Mark_9.getSavedY()*/0, 0);
+        robot = new Mark13(this, /*Mark_9.getSavedX()*/1.2, /*Mark_9.getSavedY()*/1.2, 0);
 
         robot.disableBrakes();
         /*String visionPlaceholder = "low";
@@ -60,7 +60,8 @@ public class Auto extends LinearOpMode {
 
         waitForStart();
 
-        robot.maneuverToPosition(1, 1, 0.4, 0);
+        //robot.maneuverToPosition(2, 2, 0.4, 0);
+        robot.maneuverToPositionFinalAngle(2,2,0.4,0);
 
 
         robot.stopDrive();
