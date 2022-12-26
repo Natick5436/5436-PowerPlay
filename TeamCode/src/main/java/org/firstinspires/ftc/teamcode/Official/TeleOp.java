@@ -119,7 +119,7 @@ public class TeleOp extends LinearOpMode {
                 //int armEncoderDiff = robot.getArmEncoderDiff();
                 int leftPulleyPosition = robot.leftAxis.getTargetPosition();
                 int rightPulleyPosition = robot.rightAxis.getTargetPosition();
-                if(gamepad2.dpad_up && leftPulleyPosition <= 11600 /*+ armEncoderDiff*/){
+                if(gamepad2.dpad_up && leftPulleyPosition <= 11000 /*+ armEncoderDiff*/){
                     //change the 400s to change how much to pulleys goe each time
                     robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() + 400);
                     robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() + 400);
@@ -229,19 +229,7 @@ public class TeleOp extends LinearOpMode {
 
 //BACKUP CODE
 /*
-            if (System.currentTimeMillis() - liftTime > 700) {
-                int armEncoderDiff = robot.getArmEncoderDiff();
-                int liftPosition = robot.liftMotor.getTargetPosition();
-                if(gamepad2.dpad_up && liftPosition < 12000 + armEncoderDiff){
-                    robot.liftMotor.setTargetPosition(liftPosition + 400);
-                    liftTime = System.currentTimeMillis();
-                    //sleep(500);
-                }else if(gamepad2.dpad_down && liftPosition > 1 + armEncoderDiff){
-                    robot.liftMotor.setTargetPosition(liftPosition - 400);
-                    liftTime = System.currentTimeMillis();
-                    //sleep(500);
-                };
-            }
+
 
             if (System.currentTimeMillis() - liftTime > 250) {
                 int armPosition = robot.liftMotor.getTargetPosition();

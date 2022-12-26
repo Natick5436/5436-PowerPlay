@@ -100,7 +100,7 @@ public class Mark13 extends Mecanum_Drive{
         }
         attachObstacles(obstacles, 2.3876, 3.6068);
         createBuffers(0.30546);
-        setPathFollowingParameters(2, Math.PI / 2, 0.3, 0);
+        setPathFollowingParameters(2, Math.PI / 2,0.3, 0);
 
 
 

@@ -52,6 +52,7 @@ public class Auto extends LinearOpMode {
         while (!isStarted()) {
             telemetry.addData("x", robot.getX());
             telemetry.addData("y", robot.getY());
+            telemetry.addData("angle", robot.getAngle());
             telemetry.update();
             if (isStopRequested()) {
                 return;
@@ -61,7 +62,15 @@ public class Auto extends LinearOpMode {
         waitForStart();
 
         //robot.maneuverToPosition(2, 2, 0.4, 0);
-        robot.maneuverToPositionFinalAngle(2,2,0.4,0);
+        robot.maneuverToPosition(1.2,2,0.4,0);
+        telemetry.addData("x", robot.getX());
+        telemetry.addData("y", robot.getY());
+        telemetry.update();
+        sleep(8000);
+        telemetry.addData("x", robot.getX());
+        telemetry.addData("y", robot.getY());
+        telemetry.update();
+
 
 
         robot.stopDrive();
