@@ -21,10 +21,12 @@
 
 package org.firstinspires.ftc.teamcode.Testing;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.BarcodeScanner;
+import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.BeaconScanner;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -35,7 +37,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
  * 100% accurate) method of detecting the skystone when lined up with
  * the sample regions over the first 3 stones.
  */
-@TeleOp
+@Autonomous(name="CoolTest", group = "Autonomous")
 public class Webcam extends LinearOpMode
 {
     OpenCvInternalCamera phoneCam;
