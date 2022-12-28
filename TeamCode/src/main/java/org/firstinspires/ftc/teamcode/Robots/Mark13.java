@@ -57,9 +57,6 @@ public class Mark13 extends Mecanum_Drive{
     public CRServo rightGrabber;
     String rightGrabberInit = "rightGrabber";
 
-    public Servo pulleyServo;
-    String pulleyServoInit = "pulleyServo";
-
     public CRServo centerServo;
     String centerServoInit = "centerServo";
 
@@ -118,7 +115,6 @@ public class Mark13 extends Mecanum_Drive{
         leftGrabber =ln.hardwareMap.crservo.get(leftGrabberInit);
         rightGrabber = ln.hardwareMap.crservo.get(rightGrabberInit);
         rightGrabber.setDirection(DcMotorSimple.Direction.REVERSE);
-        pulleyServo = ln.hardwareMap.servo.get(pulleyServoInit);
 
 
         /***Sets all motors to run on encoders***/
@@ -154,6 +150,11 @@ public class Mark13 extends Mecanum_Drive{
         rightAxis.setPower(0.4);
         leftPulley.setPower(0.4);
         rightPulley.setPower(0.4);
+
+        rB.setDirection(DcMotorSimple.Direction.REVERSE);
+        lB.setDirection(DcMotorSimple.Direction.FORWARD);
+        rF.setDirection(DcMotorSimple.Direction.REVERSE);
+        lF.setDirection(DcMotorSimple.Direction.FORWARD);
 
 
         armEncoderDiff = 0;

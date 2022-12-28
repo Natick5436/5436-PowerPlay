@@ -247,7 +247,7 @@ public class Mecanum_Drive extends Robot{
             }
             angleI += angleCorrection*(currentTime-lastTime)/1000;
             angleD = 1000*(angleCorrection-lastAngleCorrection)/(currentTime-lastTime);
-            double anglePower = 2*angleCorrection + 0.2*angleI + 0*angleD;
+            double anglePower = 1*angleCorrection + 0.2*angleI + 0*angleD;/*D=0*/
             inverseKinematics(new double[]{0, 0, power*anglePower});
             lastTime = currentTime;
             ln.telemetry.addData("Turn: Angle correction", angleCorrection);

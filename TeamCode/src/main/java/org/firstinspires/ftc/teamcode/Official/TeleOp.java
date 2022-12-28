@@ -48,6 +48,7 @@ public class TeleOp extends LinearOpMode {
 
                 drivePower = 0.5;
             }
+
             if (!gamepad1.right_bumper && System.currentTimeMillis() - speedTime > 700){
                 fastMode = !fastMode;
             }
@@ -82,10 +83,10 @@ public class TeleOp extends LinearOpMode {
                 robot.lF.setDirection(DcMotorSimple.Direction.REVERSE);
             } else {
                 if (!bumperDown) {
-                    robot.lF.setPower(drivePower * gamepad1.left_stick_y);
-                    robot.lB.setPower(drivePower * gamepad1.left_stick_y);
-                    robot.rF.setPower(drivePower * gamepad1.right_stick_y);
-                    robot.rB.setPower(drivePower * gamepad1.right_stick_y);
+                    robot.lF.setPower(-drivePower * gamepad1.left_stick_y);
+                    robot.lB.setPower(-drivePower * gamepad1.left_stick_y);
+                    robot.rF.setPower(-drivePower * gamepad1.right_stick_y);
+                    robot.rB.setPower(-drivePower * gamepad1.right_stick_y);
                     robot.setStatus(Mecanum_Drive.Status.DRIVING);
                 } else {
                     if

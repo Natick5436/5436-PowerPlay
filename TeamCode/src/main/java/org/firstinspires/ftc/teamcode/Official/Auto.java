@@ -12,6 +12,8 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
+import java.sql.Array;
+
 //This auto is funni and completely stupid and got us 60 points
 @Autonomous(name="TesterAuto",group="Autonomous")
 public class Auto extends LinearOpMode {
@@ -62,14 +64,18 @@ public class Auto extends LinearOpMode {
         waitForStart();
 
         //robot.maneuverToPosition(2, 2, 0.4, 0);
-        robot.maneuverToPosition(1.2,2,0.4,0);
-        telemetry.addData("x", robot.getX());
-        telemetry.addData("y", robot.getY());
-        telemetry.update();
-        sleep(8000);
-        telemetry.addData("x", robot.getX());
-        telemetry.addData("y", robot.getY());
-        telemetry.update();
+        robot.maneuverToPosition(2,1.2,0.15,0);
+        //robot.turn(0.2, Math.PI/2, Math.PI/60);
+        //double[] array = {0.3, 0.3, 0};
+        //robot.inverseKinematics(array);
+        sleep(7000);
+//        telemetry.addData("x", robot.getX());
+//        telemetry.addData("y", robot.getY());
+//        telemetry.update();
+//        sleep(8000);
+//        telemetry.addData("x", robot.getX());
+//        telemetry.addData("y", robot.getY());
+//        telemetry.update();
 
 
 
