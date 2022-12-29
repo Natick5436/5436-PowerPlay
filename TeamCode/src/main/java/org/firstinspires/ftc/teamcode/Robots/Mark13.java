@@ -57,7 +57,7 @@ public class Mark13 extends Mecanum_Drive{
     public CRServo rightGrabber;
     String rightGrabberInit = "rightGrabber";
 
-    public CRServo centerServo;
+    public Servo centerServo;
     String centerServoInit = "centerServo";
 
     public final static double ARM_HOME = 0.0;
@@ -110,7 +110,7 @@ public class Mark13 extends Mecanum_Drive{
         rightClawSpinner = ln.hardwareMap.servo.get(rightClawSpinnerInit);
         rightClawSpinner.setDirection(Servo.Direction.REVERSE);
 
-        centerServo = ln.hardwareMap.crservo.get(centerServoInit);
+        centerServo = ln.hardwareMap.servo.get(centerServoInit);
 
         leftGrabber =ln.hardwareMap.crservo.get(leftGrabberInit);
         rightGrabber = ln.hardwareMap.crservo.get(rightGrabberInit);

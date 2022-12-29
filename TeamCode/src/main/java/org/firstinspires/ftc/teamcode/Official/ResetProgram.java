@@ -60,7 +60,7 @@ public class ResetProgram extends LinearOpMode {
 
             telemetry.addData("leftTrigger", gamepad2.left_trigger);
             telemetry.addData("leftBumper", gamepad2.left_bumper);
-            telemetry.addData("power", robot.centerServo.getPower());
+            //telemetry.addData("power", robot.centerServo.getPower());
 
             telemetry.addData("armPos", robot.leftPulley.getTargetPosition());
 

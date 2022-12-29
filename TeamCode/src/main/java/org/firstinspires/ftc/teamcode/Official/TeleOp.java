@@ -170,11 +170,9 @@ public class TeleOp extends LinearOpMode {
 
 
             if(gamepad2.x){
-                robot.centerServo.setPower(0.4);
+                robot.centerServo.setPosition(0.5);
             }else if(gamepad2.b){
-                robot.centerServo.setPower(-0.4);
-            }else{
-                robot.centerServo.setPower(0);
+                robot.centerServo.setPosition(0);
             }
 
 
