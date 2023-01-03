@@ -30,7 +30,7 @@ public class BeaconScanner2 extends OpenCvPipeline {
 
 
     private Telemetry telemetry;
-    private volatile BeaconPosition beaconPosition = BeaconPosition.PINK;
+    private volatile DeprecatedBeaconPosition beaconPosition = DeprecatedBeaconPosition.PINK;
 
 //    void inputToHSV(Mat input) {
 //        Imgproc.cvtColor(input, HSV, Imgproc.COLOR_RGB2HSV);
@@ -64,18 +64,18 @@ public class BeaconScanner2 extends OpenCvPipeline {
 
         final double threshold = 10;
         if(upperValue > threshold){
-            beaconPosition = BeaconPosition.PINK;
+            beaconPosition = DeprecatedBeaconPosition.PINK;
         }else if(lowerValue > threshold){
-            beaconPosition = BeaconPosition.YELLOW;
+            beaconPosition = DeprecatedBeaconPosition.YELLOW;
         }else{
-            beaconPosition = BeaconPosition.GREEN;
+            beaconPosition = DeprecatedBeaconPosition.GREEN;
         }
 
 
-        return mat;
+        return null;
     }
 
-    public BeaconPosition getBeaconPosition() {
+    public DeprecatedBeaconPosition getBeaconPosition() {
         return beaconPosition;
     }
 }

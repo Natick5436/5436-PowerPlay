@@ -24,10 +24,7 @@ package org.firstinspires.ftc.teamcode.Testing;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.BarcodeScanner;
-import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.BeaconPosition;
 import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.BeaconScanner;
-import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.BeaconScanner2;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -42,7 +39,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 public class WebcamTest extends LinearOpMode
 {
     OpenCvInternalCamera phoneCam;
-    BeaconScanner2 pipeline;
+    BeaconScanner pipeline;
 
     @Override
     public void runOpMode()
@@ -56,7 +53,7 @@ public class WebcamTest extends LinearOpMode
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        pipeline = new BeaconScanner2();
+        pipeline = new BeaconScanner();
         phoneCam.setPipeline(pipeline);
 
         // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
@@ -85,16 +82,19 @@ public class WebcamTest extends LinearOpMode
 
         while (!opModeIsActive())
         {
-            BeaconPosition shadowPeople = pipeline.getBeaconPosition();
-            telemetry.addData("Analysis", pipeline.getBeaconPosition());
+            BeaconScanner.BeaconPosition shadowPeople = pipeline.getAnalysis();
+            telemetry.addData("Analysis", pipeline.getAnalysis());
             telemetry.update();
-            phoneCam.stopStreaming();
+            //phoneCam.stopStreaming();
 
             // Don't burn CPU cycles busy-looping in this sample
             sleep(50);
         }
 
         while(opModeIsActive()){
+            BeaconScanner.BeaconPosition shadowPeople = pipeline.getAnalysis();
+            telemetry.addData("Analysis", shadowPeople);
+            telemetry.update();
             phoneCam.stopStreaming();
         }
     }

@@ -6,6 +6,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
@@ -16,106 +17,110 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BeaconScanner extends OpenCvPipeline {
-    int hi = 0;
-    boolean on;
-    private OpenCvCamera cam;
-    private Mat mat = new Mat();
-    private Rect upperROI = new Rect(new Point(240, 120), new Point(304, 145));
-    private Rect lowerROI = new Rect(new Point(240, 145), new Point(304, 170));
-
-    private Mat upperMat;
-    private Mat lowerMat;
-
-    private BeaconPosition beaconPosition;
-    private Telemetry telemetry;
-
-    public BeaconScanner(HardwareMap hwMap, Telemetry t){
-        telemetry = t;
-        int camMonViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
-        hi++;
-
-        cam = OpenCvCameraFactory.getInstance().createWebcam(
-                hwMap.get(WebcamName.class, "Webcam 1"),
-                camMonViewId
-        );
-        hi++;
-        //cam = OpenCvCameraFactory.getInstance().createWebcam(hwMap.get(WebcamName.class, "Webcam 1"), camMonViewId);
-
-        cam.setPipeline(this);
-
-
-        cam.openCameraDeviceAsync(
-                new OpenCvCamera.AsyncCameraOpenListener()
-                {
-                    @Override
-                    public void onOpened()
-                    {
-                        cam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
-                    }
-
-                    @Override
-                    public void onError(int errorCode)
-                    {
-                        t.addData("Error", errorCode);
-                        t.update();
-                    }
-                }
-        );
-
-        cam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.MAXIMIZE_EFFICIENCY);
+    public enum BeaconPosition {
+        ORANGE,
+        YELLOW,
+        GREEN
     }
 
+
+    /*
+     * Some color constants
+     */
+
+    Scalar yellowLowerBound = new Scalar(100, 100, 25);
+    Scalar yellowUpperBound = new Scalar(255, 255, 175);
+
+    Scalar greenLowerBound = new Scalar(50, 120, 95);
+    Scalar greenUpperBound = new Scalar(95, 255, 160);
+
+    Scalar orangeLowerBound = new Scalar(120, 50, 10);
+    Scalar orangeUpperBound = new Scalar(200, 100, 50);
+
+
+    /*
+     * Points which actually define the sample region rectangles, derived from above values
+     *
+     * Example of how points A and B work to define a rectangle
+     *
+     *   ------------------------------------
+     *   | (0,0) Point A                    |
+     *   |                                  |
+     *   |                                  |
+     *   |                                  |
+     *   |                                  |
+     *   |                                  |
+     *   |                                  |
+     *   |                  Point B (70,50) |
+     *   ------------------------------------
+     *
+     */
+
+
+    /*
+     * Working variables
+     */
+    private Mat mat = new Mat();
+    private Rect scanRegion = new Rect(new Point(240, 120), new Point(304, 170));
+
+    private Telemetry telemetry;
+    private volatile BeaconPosition beaconPosition = BeaconPosition.ORANGE;
+
+
+    Mat hsv = new Mat();
+    Mat filter = new Mat();
+
+
+    /*
+     * This function takes the RGB frame, converts to YCrCb,
+     * and extracts the Cb channel to the 'Cb' variable
+     */
+
     @Override
-    public void init(Mat mat) {
-        hi++;
-        super.init(mat);
+    public void init(Mat firstFrame) {
+
     }
 
     @Override
     public Mat processFrame(Mat input) {
-        Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGBA2BGR);
-        Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2HSV);
-        Scalar lowerBound = new Scalar(25, 100, 100);
-        Scalar upperBound = new Scalar(175, 255, 255);
-        Core.inRange(mat, lowerBound, upperBound, mat);
 
-        upperMat = mat.submat(upperROI);
-        lowerMat = mat.submat(lowerROI);
+        Imgproc.cvtColor(input, hsv, Imgproc.COLOR_BGR2HSV);
 
-        double upperValue = Math.round(Core.mean(upperMat).val[2] / 255);
-        double lowerValue = Math.round(Core.mean(lowerMat).val[2] / 255);
+        // Create masks for each color
+        Mat maskYellow = new Mat();
+        Core.inRange(hsv, yellowLowerBound, yellowUpperBound, maskYellow);
+        Mat maskGreen = new Mat();
+        Core.inRange(hsv, greenLowerBound, greenUpperBound, maskGreen);
+        Mat maskOrange = new Mat();
+        Core.inRange(hsv, orangeLowerBound, orangeUpperBound, maskOrange);
 
-        upperMat.release();
-        lowerMat.release();
-        mat.release();
+        Mat mask = new Mat();
+        Core.add(maskYellow, maskGreen, mask);
+        Core.add(mask, maskOrange, mask);
 
-        final double threshold = 10;
-        if(upperValue > threshold){
-            beaconPosition = BeaconPosition.PINK;
-        }else if(lowerValue > threshold){
+        // Find contours in the mask
+        List<MatOfPoint> contours = new ArrayList<>();
+        Mat hierarchy = new Mat();
+        Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+
+        // Otherwise, determine which color the beacon is based on the contours
+        if (Core.countNonZero(maskYellow) > Core.countNonZero(maskGreen) && Core.countNonZero(maskYellow) > Core.countNonZero(maskOrange)) {
             beaconPosition = BeaconPosition.YELLOW;
-        }else{
+        } else if (Core.countNonZero(maskGreen) > Core.countNonZero(maskYellow) && Core.countNonZero(maskGreen) > Core.countNonZero(maskOrange)) {
             beaconPosition = BeaconPosition.GREEN;
+        } else {
+            beaconPosition = BeaconPosition.ORANGE;
         }
-        telemetry.addData("hi", hi);
-        telemetry.update();
-        hi++;
 
-        return mat;
+        return mask;
     }
 
-    public BeaconPosition getBeaconPosition() {
+
+    public BeaconPosition getAnalysis() {
         return beaconPosition;
-    }
-
-    public void stop(){
-        cam.closeCameraDeviceAsync(() ->{});
-    }
-    public int getHi(){
-        return hi;
-    }
-    public boolean getOn(){
-        return on;
     }
 }

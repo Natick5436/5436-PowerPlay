@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.ThreadsandInterfaces;
 
-public enum BeaconPosition {
+public enum DeprecatedBeaconPosition {
     PINK,
     YELLOW,
     GREEN
