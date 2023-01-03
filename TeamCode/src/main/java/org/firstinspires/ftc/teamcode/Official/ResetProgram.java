@@ -29,6 +29,7 @@ public class ResetProgram extends LinearOpMode {
         //leftServoPosition = Range.clip(leftServoPosition, robot.ARM_MIN_RANGE,robot.ARM_MAX_RANGE);
         //robot.leftServo.setPosition(leftServoPosition);
 
+
         waitForStart();
 
 
@@ -73,3 +74,7 @@ public class ResetProgram extends LinearOpMode {
 
     }
 }
+
+
+
+

@@ -80,15 +80,16 @@ public class BeaconScanner extends OpenCvPipeline {
      * and extracts the Cb channel to the 'Cb' variable
      */
 
+
+
+
     @Override
     public void init(Mat firstFrame) {
-
+        Imgproc.cvtColor(firstFrame, hsv, Imgproc.COLOR_BGR2HSV);
     }
 
     @Override
     public Mat processFrame(Mat input) {
-
-        Imgproc.cvtColor(input, hsv, Imgproc.COLOR_BGR2HSV);
 
         // Create masks for each color
         Mat maskYellow = new Mat();
@@ -102,19 +103,30 @@ public class BeaconScanner extends OpenCvPipeline {
         Core.add(maskYellow, maskGreen, mask);
         Core.add(mask, maskOrange, mask);
 
-        // Find contours in the mask
-        List<MatOfPoint> contours = new ArrayList<>();
-        Mat hierarchy = new Mat();
-        Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-
-        // Otherwise, determine which color the beacon is based on the contours
-        if (Core.countNonZero(maskYellow) > Core.countNonZero(maskGreen) && Core.countNonZero(maskYellow) > Core.countNonZero(maskOrange)) {
-            beaconPosition = BeaconPosition.YELLOW;
-        } else if (Core.countNonZero(maskGreen) > Core.countNonZero(maskYellow) && Core.countNonZero(maskGreen) > Core.countNonZero(maskOrange)) {
-            beaconPosition = BeaconPosition.GREEN;
-        } else {
-            beaconPosition = BeaconPosition.ORANGE;
-        }
+//        Imgproc.rectangle(
+//                input, // Buffer to draw on
+//                new Point(240, 120), new Point(304, 170), // Second point which defines the rectangle
+//                new Scalar(0, 255, 0), // The color the rectangle is drawn in
+//                2); // Thickness of the rectangle lines
+//
+//        // Find contours in the mask
+//        List<MatOfPoint> contours = new ArrayList<>();
+//        Mat hierarchy = new Mat();
+//        Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+//
+//        for (MatOfPoint contour : contours) {
+//            Rect rect = Imgproc.boundingRect(contour);
+//            Imgproc.rectangle(input, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0), 2);
+//        }
+//
+//        // Otherwise, determine which color the beacon is based on the contours
+//        if (Core.countNonZero(maskYellow) > Core.countNonZero(maskGreen) && Core.countNonZero(maskYellow) > Core.countNonZero(maskOrange)) {
+//            beaconPosition = BeaconPosition.YELLOW;
+//        } else if (Core.countNonZero(maskGreen) > Core.countNonZero(maskYellow) && Core.countNonZero(maskGreen) > Core.countNonZero(maskOrange)) {
+//            beaconPosition = BeaconPosition.GREEN;
+//        } else {
+//            beaconPosition = BeaconPosition.ORANGE;
+//        }
 
         return mask;
     }

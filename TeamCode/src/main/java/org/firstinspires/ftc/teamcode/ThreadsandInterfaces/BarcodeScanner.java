@@ -178,7 +178,7 @@ public class BarcodeScanner extends OpenCvPipeline {
          * Draw a rectangle showing sample region 1 on the screen.
          * Simply a visual aid. Serves no functional purpose.
          */
-/*
+
         Imgproc.rectangle(
                 input, // Buffer to draw on
                 region1_pointA, // First point which defines the rectangle
@@ -186,7 +186,7 @@ public class BarcodeScanner extends OpenCvPipeline {
                 BLUE, // The color the rectangle is drawn in
                 2); // Thickness of the rectangle lines
 
-*/
+
 
         /*
          * Draw a rectangle showing sample region 2 on the screen.

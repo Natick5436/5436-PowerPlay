@@ -83,7 +83,7 @@ public class WebcamTest extends LinearOpMode
         while (!opModeIsActive())
         {
             BeaconScanner.BeaconPosition shadowPeople = pipeline.getAnalysis();
-            telemetry.addData("Analysis", pipeline.getAnalysis());
+            telemetry.addData("Analysis", shadowPeople);
             telemetry.update();
             //phoneCam.stopStreaming();
 
@@ -92,10 +92,9 @@ public class WebcamTest extends LinearOpMode
         }
 
         while(opModeIsActive()){
-            BeaconScanner.BeaconPosition shadowPeople = pipeline.getAnalysis();
-            telemetry.addData("Analysis", shadowPeople);
-            telemetry.update();
             phoneCam.stopStreaming();
+
+            stop();
         }
     }
 

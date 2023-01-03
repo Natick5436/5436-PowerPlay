@@ -89,12 +89,12 @@ public class Mark13 extends Mecanum_Drive{
         attachPositionTracker(odo);
         enableBrakes();
 
-        obstacles = new boolean[80][120];
-        for (int x = 0; x < 80; x++) {
-            for (int y = 0; y < 120; y++) {
-                obstacles[x][y] = false;
-            }
-        }
+          obstacles = new boolean[80][120];
+//        for (int x = 0; x < 80; x++) {
+//            for (int y = 0; y < 120; y++) {
+//                obstacles[x][y] = false;
+//            }
+//        }
         attachObstacles(obstacles, 2.3876, 3.6068);
         createBuffers(0.30546);
         setPathFollowingParameters(2, Math.PI / 2,0.3, 0);
@@ -179,6 +179,12 @@ public class Mark13 extends Mecanum_Drive{
     public void setAngleEncoderDiff(int change) {
         angleEncoderDiff += change;
         //ReadWriteFile.writeFile(armEncoderFile,Integer.toString(armEncoderDiff));
+    }
+    public void armDown(double power, int position){
+        leftAxis.setPower(power);
+        rightAxis.setPower(power);
+        leftAxis.setTargetPosition(position);
+        rightAxis.setTargetPosition(position);
     }
 
 }

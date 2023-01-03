@@ -486,6 +486,8 @@ public class Mecanum_Drive extends Robot{
                     ln.telemetry.addData("Off course:", "Recalculating");
                     ln.telemetry.addData("X: ", getX());
                     ln.telemetry.addData("Y: ", getY());
+                    ln.telemetry.addData("y of time:", follow.yOfTime(timeSeconds));
+                    ln.telemetry.addData("X of time:", follow.xOfTime(timeSeconds));
                     ln.telemetry.update();
                     return maneuverToPosition(goalX, goalY, velocity, finalAngle);
                 }
