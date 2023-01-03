@@ -56,16 +56,17 @@ public class Auto extends LinearOpMode {
             telemetry.addData("y", robot.getY());
             telemetry.addData("angle", robot.getAngle());
             telemetry.update();
+
             if (isStopRequested()) {
                 return;
             }
         }
 
         waitForStart();
-
-        //robot.maneuverToPosition(2, 2, 0.4, 0);
-        robot.maneuverToPosition(2,1.2,0.15,0);
-        //robot.turn(0.2, Math.PI/2, Math.PI/60);
+       // robot.strafe(1.2);
+        robot.maneuverToPosition(1.2, 2, 0.55, 0);
+        //robot.maneuverToPosition(2,1.2,0.55,0);
+        //robot.turn(0.5, Math.PI/2, Math.PI/60);
         //double[] array = {0.3, 0.3, 0};
         //robot.inverseKinematics(array);
         sleep(7000);

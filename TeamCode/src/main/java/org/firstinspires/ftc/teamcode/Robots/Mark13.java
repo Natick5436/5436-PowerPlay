@@ -83,15 +83,15 @@ public class Mark13 extends Mecanum_Drive{
 
 
         //armEncoderDiff = 0; //Integer.parseInt(ReadWriteFile.readFile(armEncoderFile).trim());
-        odo = new TwoWheelOdometry(ln, new DeadWheel(lB, 0.0508, 8192, -1), new DeadWheel(lF, 0.0508, 8192, -1), imu, horizontalRadius, verticalRadius, initialX, initialY);
+        odo = new TwoWheelOdometry(ln, new DeadWheel(lB, 0.0508, 8192, 1), new DeadWheel(lF, 0.0508, 8192, 1), imu, horizontalRadius, verticalRadius, initialX, initialY);
         odo.start();
         attachAngleTracker(imu);
         attachPositionTracker(odo);
         enableBrakes();
 
         obstacles = new boolean[80][120];
-        for (int x = 0; x < 79; x++) {
-            for (int y = 0; y < 119; y++) {
+        for (int x = 0; x < 80; x++) {
+            for (int y = 0; y < 120; y++) {
                 obstacles[x][y] = false;
             }
         }

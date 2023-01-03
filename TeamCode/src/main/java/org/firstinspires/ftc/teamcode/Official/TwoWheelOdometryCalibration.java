@@ -1,3 +1,13 @@
+/**
+ * Calibration program for Odometry - Written by Nolan Palmer (2018 - 2020)
+ * Edited by: [add your name and the current year here]
+ *  - Maxwell Harriss (2022)
+ *  - Adam Pochobut (2022)
+ * ===================================
+ * This code spins the robot to get values that odometry needs to work
+ * will in telemetry display values
+ */
+
 package org.firstinspires.ftc.teamcode.Official;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;

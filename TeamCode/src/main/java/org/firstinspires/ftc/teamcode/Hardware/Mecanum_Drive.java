@@ -1,3 +1,10 @@
+/**
+ * Sets up the Mecanum wheels that we use for our drive train - Written by ??? (If someone know please put it here (my guess is Nolan or adam))
+ * Edited by: [add your name and the current year here]
+ *  - Maxwell Harriss (2022)
+ *  - Adam Pochobut (2022)
+ *
+ */
 package org.firstinspires.ftc.teamcode.Hardware;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -17,6 +24,7 @@ import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.PositionTracker;
 
 import java.util.ArrayList;
 
+    // Adds Identifiers to the robot for use in other parts of the program, and makes a value for that status to be identified with
 public class Mecanum_Drive extends Robot{
     public enum Status {STRAFING, FORWARD, ARCHING, DRIVING, TURNING, ANGLE_STRAFING, INITIALIZING, INITIALIZED, PREINIT}
     private Status robotStatus;
@@ -27,7 +35,7 @@ public class Mecanum_Drive extends Robot{
         return robotStatus;
     }
 
-
+    // Adds values for the listed properties
     private double wheelRadius;
     private double LENGTH_Y;
     private double LENGTH_X;
@@ -40,12 +48,13 @@ public class Mecanum_Drive extends Robot{
     private double startAngle;
     final double maxCorrectionAngle = Math.PI/2;
 
-    //Sensors
+    // Sensors
     private DcMotor.RunMode runMode;
     private VoltageSensor voltage;
     private AngleTracker angle;
     private PositionTracker pos;
 
+    // Sets all the motors for the drive train as Dc motors and assigns values for the wheels properties *
     public DcMotor[] wheelArray;
     public Mecanum_Drive(DcMotor lF, DcMotor lB, DcMotor rF, DcMotor rB, DcMotor.RunMode runMode, double wheelRadius, double LENGTH_X, double LENGTH_Y, double motorMaxRPM){
         super();
@@ -70,6 +79,7 @@ public class Mecanum_Drive extends Robot{
                                                         {1, 1, (-(LENGTH_X + LENGTH_Y)/2)},
                                                         {1, -1, ((LENGTH_X + LENGTH_Y)/2)}};
     }
+    // Adds the Sets the the motors to run mode*
     public Mecanum_Drive(DcMotor lF, DcMotor lB, DcMotor rF, DcMotor rB, DcMotor.RunMode runMode){
         super();
         this.lF = lF;
@@ -85,6 +95,7 @@ public class Mecanum_Drive extends Robot{
         this.runMode = runMode;
         this.wheelArray = new DcMotor[]{this.lF, this.rF, this.lB, this.rB};
     }
+    // Adds the measurements for the motor *
     public void setMeasurements(double wheelRadius, double LENGTH_X, double LENGTH_Y, double motorMaxRPM){
         this.wheelRadius = wheelRadius;
         this.LENGTH_X = LENGTH_X;
@@ -96,10 +107,11 @@ public class Mecanum_Drive extends Robot{
                 {1, -1, ((LENGTH_X + LENGTH_Y)/2)}};
     }
 
+    // Sets the program to execute in a sequential order
     public void attachLinearOpMode(LinearOpMode linearOpMode){
         super.ln = linearOpMode;
     }
-
+    // This program changes the motors to resist movement when they are not being told to move
     public boolean enableBrakes(){
         lF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -111,6 +123,7 @@ public class Mecanum_Drive extends Robot{
             return true;
         }
     }
+    // This program changes the motors to not resist movement when they are not being told to move
     public void disableBrakes(){
         lF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         lB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -330,6 +343,7 @@ public class Mecanum_Drive extends Robot{
     public double fieldWidthY;
     private double maxRobotRadius;
 
+    // Makes a function to set up obstacles so the auto can avoid field elements
     public void attachObstacles(boolean[][] ob, double fieldWidthX, double fieldWidthY){
         double tempPixelsPerMeter = Math.min(ob.length/fieldWidthX, ob[0].length/fieldWidthY);
         boolean[][] newOb = new boolean[(int)(fieldWidthX*tempPixelsPerMeter)][(int)(fieldWidthY*tempPixelsPerMeter)];
@@ -368,7 +382,7 @@ public class Mecanum_Drive extends Robot{
                                            double linearCorrectSpeed/*speed to correct smaller position errors*/){
         m = maxAngleCorrectVelocity;
         s = saturationAngle;
-        this.positionError = positionError;
+        this.positionError =  positionError;
         this.linearCorrectSpeed = linearCorrectSpeed;
     }
 
@@ -417,7 +431,7 @@ public class Mecanum_Drive extends Robot{
                     stopDrive();
                     return false;
                 }
-                if (Math.hypot(follow.xOfTime(timeSeconds) - getX(), follow.yOfTime(timeSeconds) - getY()) > positionError) {
+                if (Math.hypot(follow.xOfTime(timeSeconds) - getX(), follow.yOfTime(timeSeconds) - getY()) > 1 ){//positionError) {
                     stopDrive();
                     ln.telemetry.addData("Off course:", "Recalculating");
                     ln.telemetry.update();
