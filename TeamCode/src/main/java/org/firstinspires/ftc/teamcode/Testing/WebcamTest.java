@@ -24,7 +24,8 @@ package org.firstinspires.ftc.teamcode.Testing;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.BeaconScanner;
+import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.BeaconPipeline;
+import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.NewBeaconDetector;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -39,7 +40,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 public class WebcamTest extends LinearOpMode
 {
     OpenCvInternalCamera phoneCam;
-    BeaconScanner pipeline;
+    BeaconPipeline pipeline;
 
     @Override
     public void runOpMode()
@@ -53,7 +54,7 @@ public class WebcamTest extends LinearOpMode
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        pipeline = new BeaconScanner();
+        pipeline = new BeaconPipeline();
         phoneCam.setPipeline(pipeline);
 
         // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
@@ -82,8 +83,8 @@ public class WebcamTest extends LinearOpMode
 
         while (!opModeIsActive())
         {
-            BeaconScanner.BeaconPosition shadowPeople = pipeline.getAnalysis();
-            telemetry.addData("Analysis", shadowPeople);
+            NewBeaconDetector.BeaconColor beaconPipeline = pipeline.getBeaconColor();
+            telemetry.addData("Analysis", beaconPipeline);
             telemetry.update();
             //phoneCam.stopStreaming();
 
@@ -92,9 +93,16 @@ public class WebcamTest extends LinearOpMode
         }
 
         while(opModeIsActive()){
-            phoneCam.stopStreaming();
+            NewBeaconDetector.BeaconColor beaconPipeline = pipeline.getBeaconColor();
+            telemetry.addData("Analysis", beaconPipeline);
+            telemetry.addData("Yellow", pipeline.getYellowPix());
+            telemetry.addData("Orange", pipeline.getOrangePix());
+            telemetry.addData("Green", pipeline.getGreenPix());
+            telemetry.update();
+            //phoneCam.stopStreaming();
 
-            stop();
+            // Don't burn CPU cycles busy-looping in this sample
+            sleep(50);
         }
     }
 
