@@ -5,8 +5,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Hardware.Mecanum_Drive;
-import org.firstinspires.ftc.teamcode.Robots.Mark11;
-import org.firstinspires.ftc.teamcode.Robots.Mark12;
 import org.firstinspires.ftc.teamcode.Robots.Mark13;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp",group="TeleOp")
@@ -48,8 +46,7 @@ public class TeleOp extends LinearOpMode {
 
                 drivePower = 0.5;
             }
-
-            if (!gamepad1.right_bumper && System.currentTimeMillis() - speedTime > 700){
+            if (gamepad1.right_bumper && System.currentTimeMillis() - speedTime > 700){
                 fastMode = !fastMode;
             }
             if (gamepad1.left_bumper) {
@@ -83,10 +80,10 @@ public class TeleOp extends LinearOpMode {
                 robot.lF.setDirection(DcMotorSimple.Direction.REVERSE);
             } else {
                 if (!bumperDown) {
-                    robot.lF.setPower(-drivePower * gamepad1.left_stick_y);
-                    robot.lB.setPower(-drivePower * gamepad1.left_stick_y);
-                    robot.rF.setPower(-drivePower * gamepad1.right_stick_y);
-                    robot.rB.setPower(-drivePower * gamepad1.right_stick_y);
+                    robot.lF.setPower(drivePower * gamepad1.left_stick_y);
+                    robot.lB.setPower(drivePower * gamepad1.left_stick_y);
+                    robot.rF.setPower(drivePower * gamepad1.right_stick_y);
+                    robot.rB.setPower(drivePower * gamepad1.right_stick_y);
                     robot.setStatus(Mecanum_Drive.Status.DRIVING);
                 } else {
                     if
@@ -108,7 +105,7 @@ public class TeleOp extends LinearOpMode {
                     robot.rightAxis.setTargetPosition(rightAxisPosition + 400);
                     angleTime = System.currentTimeMillis();
 
-                }else if(gamepad2.dpad_right && leftAxisPosition > -100 /* + armEncoderDiff*/){
+                }else if(gamepad2.dpad_right && leftAxisPosition > -1000 /* + armEncoderDiff*/){
                     robot.leftAxis.setTargetPosition(leftAxisPosition - 400);
                     robot.rightAxis.setTargetPosition(rightAxisPosition - 400);
                     angleTime = System.currentTimeMillis();
@@ -122,13 +119,13 @@ public class TeleOp extends LinearOpMode {
                 int rightPulleyPosition = robot.rightAxis.getTargetPosition();
                 if(gamepad2.dpad_up && leftPulleyPosition <= 11000 /*+ armEncoderDiff*/){
                     //change the 400s to change how much to pulleys goe each time
-                    robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() + 400);
-                    robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() + 400);
+                    robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() + 1000);
+                    robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() + 1000);
                     liftTime = System.currentTimeMillis();
 
-                }else if(gamepad2.dpad_down && leftPulleyPosition >= 20 /* + armEncoderDiff*/){
-                    robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() - 400);
-                    robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() - 400);
+                }else if(gamepad2.dpad_down && robot.leftPulley.getTargetPosition() >= 20 /* + armEncoderDiff*/){
+                    robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() - 1000);
+                    robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() - 1000);
                     liftTime = System.currentTimeMillis();
 
                 }
@@ -147,32 +144,30 @@ public class TeleOp extends LinearOpMode {
             }*/
 
 
+
             if(gamepad2.left_bumper){
-                robot.leftGrabber.setPower(-0.3);
-                robot.rightGrabber.setPower(-0.3);
+                robot.grabber.setPosition(0);
+                backDown = true;
             }else if(gamepad2.right_bumper){
-                robot.leftGrabber.setPower(0.3);
-                robot.rightGrabber.setPower(0.3);
+                robot.grabber.setPosition(0.25);
+                backDown = true;
             }else{
-                robot.leftGrabber.setPower(0);
-                robot.rightGrabber.setPower(0);
+                backDown = false;
             }
 
 
             if(gamepad2.left_trigger>0){
-                robot.leftClawSpinner.setPosition(robot.leftClawSpinner.getPosition()+0.006);
-                robot.rightClawSpinner.setPosition(robot.rightClawSpinner.getPosition()+0.006);
+                robot.clawSpinner.setPosition(0.3);
             }else if(gamepad2.right_trigger>0){
-                robot.leftClawSpinner.setPosition(robot.leftClawSpinner.getPosition()-0.006);
-                robot.rightClawSpinner.setPosition(robot.rightClawSpinner.getPosition()-0.006);
+                robot.clawSpinner.setPosition(0);
             }
 
 
 
             if(gamepad2.x){
-                robot.centerServo.setPosition(0.5);
+                robot.centerServo.setPosition(robot.centerServo.getPosition() -0.005);
             }else if(gamepad2.b){
-                robot.centerServo.setPosition(0);
+                robot.centerServo.setPosition(robot.centerServo.getPosition() +0.005);
             }
 
 
@@ -212,6 +207,9 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("lift time", liftTime);
 
             telemetry.addData("height", robot.leftPulley.getCurrentPosition());
+            telemetry.addData("grabber", robot.grabber.getPosition());
+            telemetry.addData("BUtton Work", backDown);
+            telemetry.addData("Spinner", robot.clawSpinner.getPosition());
 
             telemetry.addData("lF", robot.lF.getDirection());
             telemetry.addData("rF", robot.rF.getDirection());

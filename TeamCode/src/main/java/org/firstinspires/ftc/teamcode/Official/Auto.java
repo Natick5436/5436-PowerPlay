@@ -66,7 +66,7 @@ public class Auto extends LinearOpMode {
        // robot.strafe(1.2);
         robot.maneuverToPosition(2, 1.2, 0.55, 0);
         robot.turn(0.3,90,10);
-        robot.armDown(0.2,200);
+        //robot.armDown(0.2,200);
         //robot.maneuverToPosition(2,1.2,0.55,0);
         //robot.turn(0.5, Math.PI/2, Math.PI/60);
         //double[] array = {0.3, 0.3, 0};

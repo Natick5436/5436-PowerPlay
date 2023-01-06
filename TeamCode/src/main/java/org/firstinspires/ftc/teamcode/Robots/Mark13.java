@@ -45,17 +45,11 @@ public class Mark13 extends Mecanum_Drive{
 
 
 
-    public Servo leftClawSpinner;
-    String leftClawSpinnerInit = "leftClawSpinner";
+    public Servo clawSpinner;
+    String clawSpinnerInit = "clawSpinner";
 
-    public Servo rightClawSpinner;
-    String rightClawSpinnerInit = "rightClawSpinner";
-
-    public CRServo leftGrabber;
-    String leftGrabberInit = "leftGrabber";
-
-    public CRServo rightGrabber;
-    String rightGrabberInit = "rightGrabber";
+    public Servo grabber;
+    String grabberInit = "grabber";
 
     public Servo centerServo;
     String centerServoInit = "centerServo";
@@ -83,21 +77,17 @@ public class Mark13 extends Mecanum_Drive{
 
 
         //armEncoderDiff = 0; //Integer.parseInt(ReadWriteFile.readFile(armEncoderFile).trim());
-        odo = new TwoWheelOdometry(ln, new DeadWheel(lB, 0.0508, 8192, 1), new DeadWheel(lF, 0.0508, 8192, 1), imu, horizontalRadius, verticalRadius, initialX, initialY);
+        odo = new TwoWheelOdometry(ln, new DeadWheel(lB, 0.0508, 8192, -1), new DeadWheel(lF, 0.0508, 8192, -1), imu, horizontalRadius, verticalRadius, initialX, initialY);
         odo.start();
         attachAngleTracker(imu);
         attachPositionTracker(odo);
         enableBrakes();
 
-          obstacles = new boolean[80][120];
-//        for (int x = 0; x < 80; x++) {
-//            for (int y = 0; y < 120; y++) {
-//                obstacles[x][y] = false;
-//            }
-//        }
+        obstacles = new boolean[80][120];
+
         attachObstacles(obstacles, 2.3876, 3.6068);
         createBuffers(0.30546);
-        setPathFollowingParameters(2, Math.PI / 2,0.3, 0);
+        setPathFollowingParameters(2, Math.PI / 2,1, 0);
 
 
 
@@ -106,16 +96,11 @@ public class Mark13 extends Mecanum_Drive{
         leftPulley = ln.hardwareMap.dcMotor.get(leftPulleyInit);
         rightPulley = ln.hardwareMap.dcMotor.get(rightPulleyInit);
 
-        leftClawSpinner = ln.hardwareMap.servo.get(leftClawSpinnerInit);
-        rightClawSpinner = ln.hardwareMap.servo.get(rightClawSpinnerInit);
-        rightClawSpinner.setDirection(Servo.Direction.REVERSE);
+        clawSpinner = ln.hardwareMap.servo.get(clawSpinnerInit);
 
         centerServo = ln.hardwareMap.servo.get(centerServoInit);
 
-        leftGrabber =ln.hardwareMap.crservo.get(leftGrabberInit);
-        rightGrabber = ln.hardwareMap.crservo.get(rightGrabberInit);
-        rightGrabber.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        grabber =ln.hardwareMap.servo.get(grabberInit);
 
         /***Sets all motors to run on encoders***/
         leftAxis.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -146,15 +131,12 @@ public class Mark13 extends Mecanum_Drive{
         rightPulley.setTargetPosition(0);
         rightPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+
+
         leftAxis.setPower(0.4);
         rightAxis.setPower(0.4);
         leftPulley.setPower(0.4);
         rightPulley.setPower(0.4);
-
-        rB.setDirection(DcMotorSimple.Direction.REVERSE);
-        lB.setDirection(DcMotorSimple.Direction.FORWARD);
-        rF.setDirection(DcMotorSimple.Direction.REVERSE);
-        lF.setDirection(DcMotorSimple.Direction.FORWARD);
 
 
         armEncoderDiff = 0;
@@ -180,11 +162,47 @@ public class Mark13 extends Mecanum_Drive{
         angleEncoderDiff += change;
         //ReadWriteFile.writeFile(armEncoderFile,Integer.toString(armEncoderDiff));
     }
-    public void armDown(double power, int position){
-        leftAxis.setPower(power);
+    public void armLift(int position, double power){
         rightAxis.setPower(power);
-        leftAxis.setTargetPosition(position);
+        leftAxis.setPower(power);
         rightAxis.setTargetPosition(position);
+        leftAxis.setTargetPosition(position);
     }
+    public void placeCone(){
+        clawSpinner.setPosition(0.5);//position of drop
+        centerServo.setPosition(0);
+        grabber.setPosition(0);
+        clawSpinner.setPosition(0.5);
+    }
+    public void axisUpToPole(){
+        rightAxis.setTargetPosition(0);
+        leftAxis.setTargetPosition(0);
+    }
+    public void axisDownToPosition(int position){
+        rightAxis.setTargetPosition(400);
+        leftAxis.setTargetPosition(400);
+        while(rightAxis.getCurrentPosition()<200){
+            //just waiting to hit 200
+        }
+        while(rightAxis.getCurrentPosition()<395){
+            rightAxis.setPower(0.25);
+            leftAxis.setPower(0.25);
+        }
+        rightAxis.setPower(0.4);
+        leftAxis.setPower(0.4);
+
+        while(leftAxis.getCurrentPosition()!=position){
+            leftAxis.setTargetPosition(position);//top cone in stack
+            rightAxis.setTargetPosition(position);//top cone in stack
+        }
+
+        while(grabber.getPosition()!=0.125){
+            grabber.setPosition(0.125);
+        }
+
+
+
+    }
+
 
 }

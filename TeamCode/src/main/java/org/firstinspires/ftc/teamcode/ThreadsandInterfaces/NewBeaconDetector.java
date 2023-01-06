@@ -2,31 +2,25 @@ package org.firstinspires.ftc.teamcode.ThreadsandInterfaces;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.videoio.VideoCapture;
-import org.opencv.videoio.Videoio;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NewBeaconDetector {
 
     public enum BeaconColor {
         ORANGE,
-        YELLOW,
+        MAGENTA,
         GREEN
     }
 
-    private Scalar lowerYellow = new Scalar(20, 100, 100);
-    private Scalar upperYellow = new Scalar(50, 255, 255);
+    private Scalar lowerMagenta = new Scalar(80, 0, 130);
+    private Scalar upperMagenta = new Scalar(255, 50, 255);
     private Scalar lowerGreen = new Scalar(50, 90, 40);
     private Scalar upperGreen = new Scalar(80, 240, 70);
-    private Scalar lowerOrange = new Scalar(25, 100, 110);
-    private Scalar upperOrange = new Scalar(60, 130, 230);
+    private Scalar lowerOrange = new Scalar(0, 0, 0);
+    private Scalar upperOrange = new Scalar(255, 255, 255);
 
-    public int yellowPix;
+    public int magentaPix;
     public int orangePix;
     public int greenPix;
 
@@ -39,7 +33,7 @@ public class NewBeaconDetector {
 
             // Create masks for each color
             Mat maskYellow = new Mat();
-            Core.inRange(hsv, lowerYellow, upperYellow, maskYellow);
+            Core.inRange(hsv, lowerMagenta, upperMagenta, maskYellow);
             Mat maskGreen = new Mat();
             Core.inRange(hsv, lowerGreen, upperGreen, maskGreen);
             Mat maskOrange = new Mat();
@@ -74,14 +68,14 @@ public class NewBeaconDetector {
                 return BeaconColor.ORANGE;
             }*/
 
-        yellowPix = Core.countNonZero(maskYellow);
+        magentaPix = Core.countNonZero(maskYellow);
         greenPix = Core.countNonZero(maskGreen);
         orangePix = Core.countNonZero(maskOrange);
 
 // Determine which color is the most intense
-        if (yellowPix > greenPix && yellowPix > orangePix) {
-            return BeaconColor.YELLOW;
-        } else if (greenPix > yellowPix && greenPix > orangePix) {
+        if (magentaPix > greenPix && magentaPix > orangePix) {
+            return BeaconColor.MAGENTA;
+        } else if (greenPix > magentaPix && greenPix > orangePix) {
             return BeaconColor.GREEN;
         } else {
             return BeaconColor.ORANGE;
@@ -89,8 +83,8 @@ public class NewBeaconDetector {
 
     }
 
-    public int getYellowPix(){
-        return yellowPix;
+    public int getMagentaPix(){
+        return magentaPix;
     }
 
     public int getOrangePix(){

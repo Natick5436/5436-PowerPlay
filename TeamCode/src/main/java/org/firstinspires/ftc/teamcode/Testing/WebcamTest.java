@@ -95,9 +95,9 @@ public class WebcamTest extends LinearOpMode
         while(opModeIsActive()){
             NewBeaconDetector.BeaconColor beaconPipeline = pipeline.getBeaconColor();
             telemetry.addData("Analysis", beaconPipeline);
-            telemetry.addData("Yellow", pipeline.getYellowPix());
+            telemetry.addData("Magenta", pipeline.getMagentaPix());
             telemetry.addData("Orange", pipeline.getOrangePix());
-            telemetry.addData("Green", pipeline.getGreenPix());
+            telemetry.addData("Green TEST", pipeline.getGreenPix());
             telemetry.update();
             //phoneCam.stopStreaming();
 
