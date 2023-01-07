@@ -202,10 +202,10 @@ public class TeleOp extends LinearOpMode {
                 robot.grabber.setPosition(.3);
                 robot.clawSpinner.setPosition(0);
                 robot.centerServo.setPosition(0.25);
-                robot.leftPulley.setTargetPosition(2800);
-                robot.rightPulley.setTargetPosition(2800);
-                robot.rightAxis.setTargetPosition(1850);
-                robot.leftAxis.setTargetPosition(1850);
+                robot.leftPulley.setTargetPosition(4800);
+                robot.rightPulley.setTargetPosition(4800);
+                robot.rightAxis.setTargetPosition(1950);
+                robot.leftAxis.setTargetPosition(1950);
                 robot.grabber.setPosition(.3);
                 sleep(2000);
                 robot.grabber.setPosition(0);

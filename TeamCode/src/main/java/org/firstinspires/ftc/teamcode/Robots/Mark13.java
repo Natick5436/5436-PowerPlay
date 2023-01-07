@@ -200,9 +200,36 @@ public class Mark13 extends Mecanum_Drive{
             grabber.setPosition(0.125);
         }
 
-
-
     }
 
+    public void simpleStrafe(double power){
+        rB.setDirection(DcMotorSimple.Direction.FORWARD);
+        lB.setDirection(DcMotorSimple.Direction.FORWARD);
+        rF.setDirection(DcMotorSimple.Direction.FORWARD);
+        lF.setDirection(DcMotorSimple.Direction.FORWARD);
+        if(power>0){
+            lF.setPower(power);
+            rF.setPower(power);
+            lB.setPower(-power);
+            rB.setPower(-power);
+        }else if(power<0){
+            lF.setPower(-power);
+            rF.setPower(-power);
+            lB.setPower(power);
+            rB.setPower(power);
+        }
+        rB.setDirection(DcMotorSimple.Direction.REVERSE);
+        lB.setDirection(DcMotorSimple.Direction.FORWARD);
+        rF.setDirection(DcMotorSimple.Direction.REVERSE);
+        lF.setDirection(DcMotorSimple.Direction.FORWARD);
+    }
+
+    public void simpleForward(double power){
+        lF.setPower(power);
+        lB.setPower(power);
+        rF.setPower(power);
+        rB.setPower(power);
+        //setStatus(Mecanum_Drive.Status.DRIVING);
+    }
 
 }

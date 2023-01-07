@@ -15,10 +15,10 @@ public class NewBeaconDetector {
 
     private Scalar lowerMagenta = new Scalar(80, 0, 130);
     private Scalar upperMagenta = new Scalar(255, 50, 255);
-    private Scalar lowerGreen = new Scalar(50, 90, 40);
-    private Scalar upperGreen = new Scalar(80, 240, 70);
-    private Scalar lowerOrange = new Scalar(0, 0, 0);
-    private Scalar upperOrange = new Scalar(255, 255, 255);
+    private Scalar lowerGreen = new Scalar(30, 40, 70);
+    private Scalar upperGreen = new Scalar(110, 255, 255);
+    private Scalar lowerOrange = new Scalar(150, 100, 0);
+    private Scalar upperOrange = new Scalar(255, 230, 50);
 
     public int magentaPix;
     public int orangePix;
@@ -29,7 +29,7 @@ public class NewBeaconDetector {
 
             // Convert the frame to the HSV color space
             Mat hsv = new Mat();
-            Imgproc.cvtColor(frame, hsv, Imgproc.COLOR_BGR2HSV);
+            Imgproc.cvtColor(frame, hsv, Imgproc.COLOR_RGB2HSV);
 
             // Create masks for each color
             Mat maskYellow = new Mat();
