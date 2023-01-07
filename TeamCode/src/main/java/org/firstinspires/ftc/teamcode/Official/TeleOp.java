@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Hardware.Mecanum_Drive;
+import org.firstinspires.ftc.teamcode.Robots.Mark11;
+import org.firstinspires.ftc.teamcode.Robots.Mark12;
 import org.firstinspires.ftc.teamcode.Robots.Mark13;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp",group="TeleOp")
@@ -31,11 +33,12 @@ public class TeleOp extends LinearOpMode {
 
         waitForStart();
 
-        robot.rB.setDirection(DcMotorSimple.Direction.FORWARD);
-        robot.lB.setDirection(DcMotorSimple.Direction.REVERSE);
-        robot.rF.setDirection(DcMotorSimple.Direction.FORWARD);
-        robot.lF.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        robot.rB.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.lB.setDirection(DcMotorSimple.Direction.FORWARD);
+        robot.rF.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.lF.setDirection(DcMotorSimple.Direction.FORWARD);
+        robot.leftAxis.setDirection(DcMotorSimple.Direction.FORWARD);
+        robot.rightAxis.setDirection(DcMotorSimple.Direction.REVERSE);
 
         while (opModeIsActive()) {
 
@@ -46,7 +49,8 @@ public class TeleOp extends LinearOpMode {
 
                 drivePower = 0.5;
             }
-            if (gamepad1.right_bumper && System.currentTimeMillis() - speedTime > 700){
+
+            if (!gamepad1.right_bumper && System.currentTimeMillis() - speedTime > 700){
                 fastMode = !fastMode;
             }
             if (gamepad1.left_bumper) {
@@ -74,16 +78,16 @@ public class TeleOp extends LinearOpMode {
                     robot.lB.setPower(gamepad1.left_trigger * drivePower);
                     robot.rB.setPower(gamepad1.left_trigger * drivePower);
                 }
-                robot.rB.setDirection(DcMotorSimple.Direction.FORWARD);
-                robot.lB.setDirection(DcMotorSimple.Direction.REVERSE);
-                robot.rF.setDirection(DcMotorSimple.Direction.FORWARD);
-                robot.lF.setDirection(DcMotorSimple.Direction.REVERSE);
+                robot.rB.setDirection(DcMotorSimple.Direction.REVERSE);
+                robot.lB.setDirection(DcMotorSimple.Direction.FORWARD);
+                robot.rF.setDirection(DcMotorSimple.Direction.REVERSE);
+                robot.lF.setDirection(DcMotorSimple.Direction.FORWARD);
             } else {
                 if (!bumperDown) {
-                    robot.lF.setPower(drivePower * gamepad1.left_stick_y);
-                    robot.lB.setPower(drivePower * gamepad1.left_stick_y);
-                    robot.rF.setPower(drivePower * gamepad1.right_stick_y);
-                    robot.rB.setPower(drivePower * gamepad1.right_stick_y);
+                    robot.lF.setPower(-drivePower * gamepad1.left_stick_y);
+                    robot.lB.setPower(-drivePower * gamepad1.left_stick_y);
+                    robot.rF.setPower(-drivePower * gamepad1.right_stick_y);
+                    robot.rB.setPower(-drivePower * gamepad1.right_stick_y);
                     robot.setStatus(Mecanum_Drive.Status.DRIVING);
                 } else {
                     if
@@ -105,7 +109,7 @@ public class TeleOp extends LinearOpMode {
                     robot.rightAxis.setTargetPosition(rightAxisPosition + 400);
                     angleTime = System.currentTimeMillis();
 
-                }else if(gamepad2.dpad_right && leftAxisPosition > -1000 /* + armEncoderDiff*/){
+                }else if(gamepad2.dpad_right && leftAxisPosition > -100 /* + armEncoderDiff*/){
                     robot.leftAxis.setTargetPosition(leftAxisPosition - 400);
                     robot.rightAxis.setTargetPosition(rightAxisPosition - 400);
                     angleTime = System.currentTimeMillis();
@@ -119,13 +123,13 @@ public class TeleOp extends LinearOpMode {
                 int rightPulleyPosition = robot.rightAxis.getTargetPosition();
                 if(gamepad2.dpad_up && leftPulleyPosition <= 11000 /*+ armEncoderDiff*/){
                     //change the 400s to change how much to pulleys goe each time
-                    robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() + 1000);
-                    robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() + 1000);
+                    robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() + 400);
+                    robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() + 400);
                     liftTime = System.currentTimeMillis();
 
-                }else if(gamepad2.dpad_down && robot.leftPulley.getTargetPosition() >= 20 /* + armEncoderDiff*/){
-                    robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() - 1000);
-                    robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() - 1000);
+                }else if(gamepad2.dpad_down && leftPulleyPosition >= 20 /* + armEncoderDiff*/){
+                    robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() - 400);
+                    robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() - 400);
                     liftTime = System.currentTimeMillis();
 
                 }
@@ -144,30 +148,36 @@ public class TeleOp extends LinearOpMode {
             }*/
 
 
-
             if(gamepad2.left_bumper){
-                robot.grabber.setPosition(0);
-                backDown = true;
+                //robot.leftGrabber.setPower(-0.3);
+                //robot.rightGrabber.setPower(-0.3);
+                robot.grabber.setPosition(.3);
             }else if(gamepad2.right_bumper){
-                robot.grabber.setPosition(0.25);
-                backDown = true;
+                //robot.leftGrabber.setPower(0.3);
+                //robot.rightGrabber.setPower(0.3);
+                robot.grabber.setPosition(0);
             }else{
-                backDown = false;
+                //robot.leftGrabber.setPower(0);
+                //robot.rightGrabber.setPower(0);
             }
 
 
             if(gamepad2.left_trigger>0){
-                robot.clawSpinner.setPosition(0.3);
+                //robot.leftClawSpinner.setPosition(robot.leftClawSpinner.getPosition()+0.006);
+                //robot.rightClawSpinner.setPosition(robot.rightClawSpinner.getPosition()+0.006);
+                robot.clawSpinner.setPosition(robot.clawSpinner.getPosition()+0.006);
             }else if(gamepad2.right_trigger>0){
-                robot.clawSpinner.setPosition(0);
+                //robot.leftClawSpinner.setPosition(robot.leftClawSpinner.getPosition()-0.006);
+                //robot.rightClawSpinner.setPosition(robot.rightClawSpinner.getPosition()-0.006);
+                robot.clawSpinner.setPosition(robot.clawSpinner.getPosition()-0.006);
             }
 
 
 
             if(gamepad2.x){
-                robot.centerServo.setPosition(robot.centerServo.getPosition() -0.005);
+                robot.centerServo.setPosition(0.25);
             }else if(gamepad2.b){
-                robot.centerServo.setPosition(robot.centerServo.getPosition() +0.005);
+                robot.centerServo.setPosition(.9);
             }
 
 
@@ -186,8 +196,42 @@ public class TeleOp extends LinearOpMode {
 
             }
 
+            if (gamepad2.a){
 
+                sleep(1000);
+                robot.grabber.setPosition(.3);
+                robot.clawSpinner.setPosition(0);
+                robot.centerServo.setPosition(0.25);
+                robot.leftPulley.setTargetPosition(2800);
+                robot.rightPulley.setTargetPosition(2800);
+                robot.rightAxis.setTargetPosition(1850);
+                robot.leftAxis.setTargetPosition(1850);
+                robot.grabber.setPosition(.3);
+                sleep(2000);
+                robot.grabber.setPosition(0);
+                robot.rightPulley.setPower(1);
+                robot.leftPulley.setPower(1);
+                sleep(1000);
+                robot.grabber.setPosition(0);
+                robot.leftAxis.setTargetPosition(510);
+                robot.rightAxis.setTargetPosition(510);
+                robot.rightPulley.setTargetPosition(10000);
+                robot.leftPulley.setTargetPosition(10000);
+                robot.clawSpinner.setPosition(.1);
+                robot.centerServo.setPosition(.9);
+                sleep(4000);
+                robot.grabber.setPosition(.3);
+                robot.leftPulley.setTargetPosition(2800);
+                robot.rightPulley.setTargetPosition(2800);
 
+            }
+
+            if (gamepad2.y) {
+                robot.leftPulley.setTargetPosition(0);
+                robot.rightPulley.setTargetPosition(0);
+                robot.leftAxis.setTargetPosition(0);
+                robot.rightAxis.setTargetPosition(0);
+            }
             //telemetry.addData("Raw IMU", ((REV_IMU)robot.getAngleTracker()).imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS));
 
 
@@ -207,14 +251,16 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("lift time", liftTime);
 
             telemetry.addData("height", robot.leftPulley.getCurrentPosition());
-            telemetry.addData("grabber", robot.grabber.getPosition());
-            telemetry.addData("BUtton Work", backDown);
-            telemetry.addData("Spinner", robot.clawSpinner.getPosition());
 
             telemetry.addData("lF", robot.lF.getDirection());
             telemetry.addData("rF", robot.rF.getDirection());
             telemetry.addData("lB", robot.lB.getDirection());
             telemetry.addData("rB", robot.rB.getDirection());
+            telemetry.addData("Arm pos", robot.leftAxis.getCurrentPosition());
+            telemetry.addData("claw servo", robot.grabber.getPosition());
+            telemetry.addData("hand rotation", robot.clawSpinner.getPosition());
+            telemetry.addData("Right direction", robot.rightAxis.getTargetPosition());
+            telemetry.addData("Left direction", robot.leftAxis.getTargetPosition());
 
 
             //telemetry.addData("Angle",robot.getAngle());

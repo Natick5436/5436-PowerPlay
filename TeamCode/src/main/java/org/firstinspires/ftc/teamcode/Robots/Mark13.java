@@ -168,12 +168,12 @@ public class Mark13 extends Mecanum_Drive{
         rightAxis.setTargetPosition(position);
         leftAxis.setTargetPosition(position);
     }
-    public void placeCone(){
+   /* public void placeCone(){
         clawSpinner.setPosition(0.5);//position of drop
         centerServo.setPosition(0);
         grabber.setPosition(0);
         clawSpinner.setPosition(0.5);
-    }
+   }*/
     public void axisUpToPole(){
         rightAxis.setTargetPosition(0);
         leftAxis.setTargetPosition(0);
