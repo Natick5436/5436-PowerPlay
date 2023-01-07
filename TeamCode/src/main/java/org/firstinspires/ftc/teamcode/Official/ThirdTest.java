@@ -2,18 +2,10 @@ package org.firstinspires.ftc.teamcode.Official;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Robots.Mark11;
-import org.firstinspires.ftc.teamcode.Robots.Mark12;
 import org.firstinspires.ftc.teamcode.Robots.Mark13;
-import org.firstinspires.ftc.teamcode.Robots.ScrimRobot;
-import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.BarcodeScanner;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name="FirstTest",group="Autonomous")
-public class FirstAuto extends LinearOpMode {
+@Autonomous(name="ThirdTest",group="Autonomous")
+public class ThirdTest extends LinearOpMode {
     Mark13 robot;
 
     //OpenCvInternalCamera phoneCam;
@@ -62,9 +54,12 @@ public class FirstAuto extends LinearOpMode {
 
         waitForStart();
 
-        robot.simpleForward(0.1);
+        robot.simpleStrafe(0.1);
         sleep(985);
-        robot.simpleForward(0);
+        robot.lF.setPower(0);
+        robot.lB.setPower(0);
+        robot.rF.setPower(0);
+        robot.rB.setPower(0);
         robot.enableBrakes();
 
         robot.stopDrive();
