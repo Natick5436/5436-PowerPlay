@@ -105,13 +105,13 @@ public class TeleOp extends LinearOpMode {
                 int rightAxisPosition = robot.rightAxis.getTargetPosition();
                 if(gamepad2.dpad_left && leftAxisPosition < 12000 /*+ armEncoderDiff*/){
                     //Change the 400s change how far the axis goes each time
-                    robot.leftAxis.setTargetPosition(leftAxisPosition + 400);
-                    robot.rightAxis.setTargetPosition(rightAxisPosition + 400);
+                    robot.leftAxis.setTargetPosition(leftAxisPosition + 200);
+                    robot.rightAxis.setTargetPosition(rightAxisPosition + 200);
                     angleTime = System.currentTimeMillis();
 
                 }else if(gamepad2.dpad_right && leftAxisPosition > -100 /* + armEncoderDiff*/){
-                    robot.leftAxis.setTargetPosition(leftAxisPosition - 400);
-                    robot.rightAxis.setTargetPosition(rightAxisPosition - 400);
+                    robot.leftAxis.setTargetPosition(leftAxisPosition - 200);
+                    robot.rightAxis.setTargetPosition(rightAxisPosition - 200);
                     angleTime = System.currentTimeMillis();
 
                 }
@@ -202,8 +202,8 @@ public class TeleOp extends LinearOpMode {
                 robot.grabber.setPosition(.3);
                 robot.clawSpinner.setPosition(0);
                 robot.centerServo.setPosition(0.25);
-                robot.leftPulley.setTargetPosition(4800);
-                robot.rightPulley.setTargetPosition(4800);
+                robot.leftPulley.setTargetPosition(3600);
+                robot.rightPulley.setTargetPosition(3600);
                 robot.rightAxis.setTargetPosition(2050);
                 robot.leftAxis.setTargetPosition(2050);
                 robot.grabber.setPosition(.3);
@@ -213,16 +213,17 @@ public class TeleOp extends LinearOpMode {
                 robot.leftPulley.setPower(1);
                 sleep(1000);
                 robot.grabber.setPosition(0);
-                robot.leftAxis.setTargetPosition(510);
-                robot.rightAxis.setTargetPosition(510);
-                robot.rightPulley.setTargetPosition(10000);
-                robot.leftPulley.setTargetPosition(10000);
-                robot.clawSpinner.setPosition(.1);
+                robot.leftAxis.setTargetPosition(500);
+                robot.rightAxis.setTargetPosition(500);
+                robot.rightPulley.setTargetPosition(12000);
+                robot.leftPulley.setTargetPosition(12000);
+                robot.clawSpinner.setPosition(.3);
                 robot.centerServo.setPosition(.9);
-                sleep(4000);
+                sleep(5000);
                 robot.grabber.setPosition(.3);
-                robot.leftPulley.setTargetPosition(4800);
-                robot.rightPulley.setTargetPosition(4800);
+                robot.leftPulley.setTargetPosition(3600);
+                robot.rightPulley.setTargetPosition(3600);
+
 
             }
 
