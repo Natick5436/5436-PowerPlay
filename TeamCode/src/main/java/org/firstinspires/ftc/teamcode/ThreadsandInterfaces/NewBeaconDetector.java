@@ -13,12 +13,28 @@ public class NewBeaconDetector {
         GREEN
     }
 
-    private Scalar lowerMagenta = new Scalar(80, 0, 130);
-    private Scalar upperMagenta = new Scalar(255, 50, 255);
-    private Scalar lowerGreen = new Scalar(30, 40, 70);
-    private Scalar upperGreen = new Scalar(110, 255, 255);
-    private Scalar lowerOrange = new Scalar(150, 100, 0);
-    private Scalar upperOrange = new Scalar(255, 230, 50);
+    public Scalar getLowerMagenta() {
+        return lowerMagenta;
+    }
+
+    public void setLowerMagenta(Scalar lowerMagenta) {
+        this.lowerMagenta = lowerMagenta;
+    }
+
+    public Scalar getUpperMagenta() {
+        return upperMagenta;
+    }
+
+    public void setUpperMagenta(Scalar upperMagenta) {
+        this.upperMagenta = upperMagenta;
+    }
+
+    public Scalar lowerMagenta = new Scalar(80, 0, 130);
+    public Scalar upperMagenta = new Scalar(255, 50, 255);
+    public Scalar lowerGreen = new Scalar(30, 40, 70);
+    public Scalar upperGreen = new Scalar(110, 255, 255);
+    public Scalar lowerOrange = new Scalar(150, 100, 0);
+    public Scalar upperOrange = new Scalar(255, 230, 50);
 
     public int magentaPix;
     public int orangePix;
@@ -94,4 +110,6 @@ public class NewBeaconDetector {
     public int getGreenPix(){
         return greenPix;
     }
+
+
 }

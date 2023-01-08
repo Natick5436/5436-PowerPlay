@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.ThreadsandInterfaces;
 
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 public class BeaconPipeline extends OpenCvPipeline {
@@ -35,6 +36,15 @@ public class BeaconPipeline extends OpenCvPipeline {
 
     public int getGreenPix(){
         return greenPix;
+    }
+
+
+    public void setLowerMagenta(Scalar scalar){
+        beaconDetector.setLowerMagenta(scalar);
+    }
+
+    public void setUpperMagenta(Scalar scalar){
+        beaconDetector.setUpperMagenta(scalar);
     }
 
 }

@@ -95,13 +95,15 @@ public class OfficialAuto extends LinearOpMode
 
         waitForStart();
 
-        robot.simpleStrafe(-0.2);
-        sleep(500);
+        //robot.simpleStrafe(-0.2);
+        sleep(800);
         robot.simpleStrafe(0);
+        sleep(1000);
 
-        robot.simpleForward(-0.4);
-        sleep(750);
+        robot.simpleForward(0.3);
+        sleep(1250);
         robot.simpleForward(0);
+        sleep(1500);
 
             if(beaconPipeline == NewBeaconDetector.BeaconColor.ORANGE){
                 robot.simpleStrafe(-0.4);

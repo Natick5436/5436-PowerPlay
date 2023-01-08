@@ -26,6 +26,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.BeaconPipeline;
 import org.firstinspires.ftc.teamcode.ThreadsandInterfaces.NewBeaconDetector;
+import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -36,7 +37,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
  * 100% accurate) method of detecting the skystone when lined up with
  * the sample regions over the first 3 stones.
  */
-@Autonomous(name="AAAAAAAAA", group = "Autonomous")
+@Autonomous(name="WebcamConfig", group = "TeleOp")
 public class WebcamTest extends LinearOpMode
 {
     OpenCvInternalCamera phoneCam;
@@ -79,20 +80,38 @@ public class WebcamTest extends LinearOpMode
             }
         });
 
-        waitForStart();
+        Scalar lowerMagenta = new Scalar(80, 0, 130);
+        Scalar upperMagenta = new Scalar(255, 50, 255);
 
-        while (!opModeIsActive())
+        int lr = 80;
+        int lg= 0;
+        int lb = 130;
+
+        int ur = 80;
+        int ug= 0;
+        int ub = 130;
+
+
+
+        while (opModeInInit())
         {
             NewBeaconDetector.BeaconColor beaconPipeline = pipeline.getBeaconColor();
             telemetry.addData("Analysis", beaconPipeline);
+            telemetry.addData("Magenta", pipeline.getMagentaPix());
+            telemetry.addData("Orange", pipeline.getOrangePix());
+            telemetry.addData("Green TEST", pipeline.getGreenPix());
             telemetry.update();
-            //phoneCam.stopStreaming();
-
-            // Don't burn CPU cycles busy-looping in this sample
-            sleep(50);
         }
 
+        waitForStart();
+
         while(opModeIsActive()){
+            if(gamepad1.a){
+                lr++;
+                pipeline.setLowerMagenta(new Scalar(lr, lg, lb));
+            }
+
+
             NewBeaconDetector.BeaconColor beaconPipeline = pipeline.getBeaconColor();
             telemetry.addData("Analysis", beaconPipeline);
             telemetry.addData("Magenta", pipeline.getMagentaPix());
