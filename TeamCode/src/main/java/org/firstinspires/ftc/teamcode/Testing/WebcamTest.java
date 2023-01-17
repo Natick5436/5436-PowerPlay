@@ -87,9 +87,9 @@ public class WebcamTest extends LinearOpMode
         int lg= 0;
         int lb = 130;
 
-        int ur = 80;
-        int ug= 0;
-        int ub = 130;
+        int ur = 255;
+        int ug= 50;
+        int ub = 255;
 
 
 
@@ -106,9 +106,54 @@ public class WebcamTest extends LinearOpMode
         waitForStart();
 
         while(opModeIsActive()){
-            if(gamepad1.a){
+            //LOWER LIMIT
+            if(gamepad1.y){
                 lr++;
                 pipeline.setLowerMagenta(new Scalar(lr, lg, lb));
+            }else if(gamepad1.a){
+                lr--;
+                pipeline.setLowerMagenta(new Scalar(lr, lg, lb));
+            }
+
+            if(gamepad1.x){
+                lg++;
+                pipeline.setLowerMagenta(new Scalar(lr, lg, lb));
+            }else if(gamepad1.b){
+                lg--;
+                pipeline.setLowerMagenta(new Scalar(lr, lg, lb));
+            }
+
+            if(gamepad1.dpad_up){
+                lb++;
+                pipeline.setLowerMagenta(new Scalar(lr, lg, lb));
+            }else if(gamepad1.dpad_down){
+                lb--;
+                pipeline.setLowerMagenta(new Scalar(lr, lg, lb));
+            }
+
+            //UPPER LIMIT
+            if(gamepad1.dpad_right){
+                ur++;
+                pipeline.setUpperMagenta(new Scalar(ur, ug, ub));
+            }else if(gamepad1.dpad_left){
+                ur--;
+                pipeline.setUpperMagenta(new Scalar(ur, ug, ub));
+            }
+
+            if(gamepad1.right_bumper){
+                ug++;
+                pipeline.setUpperMagenta(new Scalar(ur, ug, ub));
+            }else if(gamepad1.left_bumper){
+                ug--;
+                pipeline.setUpperMagenta(new Scalar(ur, ug, ub));
+            }
+
+            if(gamepad1.right_trigger > 0){
+                ub++;
+                pipeline.setUpperMagenta(new Scalar(ur, ug, ub));
+            }else if(gamepad1.left_trigger > 0){
+                ub--;
+                pipeline.setUpperMagenta(new Scalar(ur, ug, ub));
             }
 
 
@@ -117,6 +162,11 @@ public class WebcamTest extends LinearOpMode
             telemetry.addData("Magenta", pipeline.getMagentaPix());
             telemetry.addData("Orange", pipeline.getOrangePix());
             telemetry.addData("Green TEST", pipeline.getGreenPix());
+
+
+            telemetry.addData("Lower", pipeline.getLowerMagenta());
+            telemetry.addData("Upper", pipeline.getUpperMagenta());
+
             telemetry.update();
             //phoneCam.stopStreaming();
 

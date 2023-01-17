@@ -434,6 +434,8 @@ public class Mecanum_Drive extends Robot{
                 if (Math.hypot(follow.xOfTime(timeSeconds) - getX(), follow.yOfTime(timeSeconds) - getY()) > 1 ){//positionError) {
                     stopDrive();
                     ln.telemetry.addData("Off course:", "Recalculating");
+                    ln.telemetry.addData("xoftime:", follow.xOfTime(timeSeconds));
+                    ln.telemetry.addData("yoftime:", follow.yOfTime(timeSeconds));
                     ln.telemetry.update();
                     return maneuverToPosition(goalX, goalY, velocity, maintainedAngle);
                 }

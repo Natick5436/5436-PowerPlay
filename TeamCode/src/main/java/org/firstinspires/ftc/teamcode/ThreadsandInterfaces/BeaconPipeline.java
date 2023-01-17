@@ -38,6 +38,14 @@ public class BeaconPipeline extends OpenCvPipeline {
         return greenPix;
     }
 
+    public Scalar getLowerMagenta() {
+        return beaconDetector.getLowerMagenta();
+    }
+
+    public Scalar getUpperMagenta() {
+        return beaconDetector.getUpperMagenta();
+    }
+
 
     public void setLowerMagenta(Scalar scalar){
         beaconDetector.setLowerMagenta(scalar);
