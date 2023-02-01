@@ -50,8 +50,9 @@ public class TeleOp extends LinearOpMode {
                 drivePower = 0.5;
             }
 
-            if (!gamepad1.right_bumper && System.currentTimeMillis() - speedTime > 700){
+            if (gamepad1.right_bumper && System.currentTimeMillis() - speedTime > 700){
                 fastMode = !fastMode;
+                speedTime = System.currentTimeMillis();
             }
             if (gamepad1.left_bumper) {
                 if (Math.abs(gamepad1.right_stick_x) < 0.25) {
@@ -155,7 +156,7 @@ public class TeleOp extends LinearOpMode {
             }else if(gamepad2.right_bumper){
                 //robot.leftGrabber.setPower(0.3);
                 //robot.rightGrabber.setPower(0.3);
-                robot.grabber.setPosition(0);
+                robot.grabber.setPosition(-0.3);
             }else{
                 //robot.leftGrabber.setPower(0);
                 //robot.rightGrabber.setPower(0);
