@@ -100,6 +100,10 @@ public class WebcamTest extends LinearOpMode
             telemetry.addData("Magenta", pipeline.getMagentaPix());
             telemetry.addData("Orange", pipeline.getOrangePix());
             telemetry.addData("Green TEST", pipeline.getGreenPix());
+            telemetry.addData("Lower range", lowerMagenta);
+            telemetry.addData("upper range", upperMagenta);
+
+
             telemetry.update();
         }
 

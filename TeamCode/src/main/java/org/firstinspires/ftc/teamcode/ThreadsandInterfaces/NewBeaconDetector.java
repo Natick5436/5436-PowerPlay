@@ -40,6 +40,28 @@ public class NewBeaconDetector {
     public int orangePix;
     public int greenPix;
 
+    Mat maskYellow = new Mat();
+    Mat maskOrange = new Mat();
+    Mat maskGreen = new Mat();
+
+
+
+    public Mat getMaskGreen() {
+        return maskGreen;
+    }
+
+
+
+    public Mat getMaskOrange() {
+        return maskOrange;
+    }
+
+
+
+    public Mat getMaskYellow() {
+        return maskYellow;
+    }
+
     public BeaconColor detect(Mat frame) {
 
 
@@ -48,11 +70,11 @@ public class NewBeaconDetector {
             Imgproc.cvtColor(frame, hsv, Imgproc.COLOR_RGB2HSV);
 
             // Create masks for each color
-            Mat maskYellow = new Mat();
+            maskYellow = new Mat();
             Core.inRange(hsv, lowerMagenta, upperMagenta, maskYellow);
-            Mat maskGreen = new Mat();
+            maskGreen = new Mat();
             Core.inRange(hsv, lowerGreen, upperGreen, maskGreen);
-            Mat maskOrange = new Mat();
+            maskOrange = new Mat();
             Core.inRange(hsv, lowerOrange, upperOrange, maskOrange);
 
             // Combine the masks
