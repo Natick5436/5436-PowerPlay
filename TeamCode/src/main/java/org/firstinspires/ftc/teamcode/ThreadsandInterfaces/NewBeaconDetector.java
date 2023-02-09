@@ -34,7 +34,7 @@ public class NewBeaconDetector {
     public Scalar lowerGreen = new Scalar(30, 40, 70);//30, 40, 70
     public Scalar upperGreen = new Scalar(110, 255, 255);
     public Scalar lowerOrange = new Scalar(70, 30, 0);//70, 30, 0
-    public Scalar upperOrange = new Scalar(255, 180, 60);
+    public Scalar upperOrange = new Scalar(255, 210, 100);
 
     public int magentaPix;
     public int orangePix;

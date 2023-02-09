@@ -32,8 +32,8 @@ public class TeleOp extends LinearOpMode {
 
         robot.disableBrakes();
 
-        robot.leftPulley.setPower(0.5);
-        robot.rightPulley.setPower(0.5);
+        robot.leftPulley.setPower(0.3);
+        robot.rightPulley.setPower(0.3);
 
         waitForStart();
 
@@ -119,17 +119,15 @@ public class TeleOp extends LinearOpMode {
 
             if(!adjustment){
 
-
-                if(System.currentTimeMillis() - bumperTime > 700){
-                    if(gamepad2.left_bumper){
-                        //robot.leftGrabber.setPower(-0.3);
-                        //robot.rightGrabber.setPower(-0.3);
-                        robot.grabber.setPosition(robot.grabber.getPosition() + .5);
-                    }else if(gamepad2.right_bumper){
-                        //robot.leftGrabber.setPower(0.3);
-                        //robot.rightGrabber.setPower(0.3);
-                        robot.grabber.setPosition(robot.grabber.getPosition() - .5);
-                    }
+                if(gamepad2.left_bumper && robot.grabber.getPosition() >= 0){
+                    rightBumper = true;
+                    //robot.leftGrabber.setPower(-0.3);
+                    //robot.rightGrabber.setPower(-0.3);
+                    robot.grabber.setPosition(0.78);
+                }else if(gamepad2.right_bumper && robot.grabber.getPosition() <= 1){
+                    //robot.leftGrabber.setPower(0.3);
+                    //robot.rightGrabber.setPower(0.3);
+                    robot.grabber.setPosition(0.48);
                 }
 
 
@@ -141,11 +139,13 @@ public class TeleOp extends LinearOpMode {
 
 
 
-                if(System.currentTimeMillis() - clawTime > 700){
+                if(System.currentTimeMillis() - clawTime > 1000){
                     if(gamepad2.x){
-                        robot.centerServo.setPosition(robot.centerServo.getPosition() + 0.3);
+                        robot.centerServo.setPosition(0.3);
+                        clawTime = System.currentTimeMillis();
                     }else if(gamepad2.b){
-                        robot.centerServo.setPosition(robot.centerServo.getPosition() - 0.3);
+                        robot.centerServo.setPosition(1);
+                        clawTime = System.currentTimeMillis();
                     }
                 }
 
@@ -299,6 +299,8 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("Right direction", robot.rightAxis.getTargetPosition());
             telemetry.addData("Left direction", robot.leftAxis.getTargetPosition());
             telemetry.addData("Adjustment", adjustment);
+            telemetry.addData("Spinner", robot.centerServo.getPosition());
+
 
 
             //telemetry.addData("Angle",robot.getAngle());
