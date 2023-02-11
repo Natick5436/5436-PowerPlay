@@ -105,17 +105,18 @@ public class OfficialAuto extends LinearOpMode
         robot.simpleForward(0);
         sleep(1500);
 
-            if(beaconPipeline == NewBeaconDetector.BeaconColor.ORANGE){
-                robot.simpleStrafe(-0.4);
-                sleep(800);
-                robot.simpleStrafe(0);
-            }else if(beaconPipeline == NewBeaconDetector.BeaconColor.GREEN){
-                sleep(100);
-            }else/*Magenta*/{
-                robot.simpleStrafe(0.4);
-                sleep(1000);
-                robot.simpleStrafe(0);
-            }
+
+//            if(beaconPipeline == NewBeaconDetector.BeaconColor.ORANGE){
+//                robot.simpleStrafe(-0.4);
+//                sleep(800);
+//                robot.simpleStrafe(0);
+//            }else if(beaconPipeline == NewBeaconDetector.BeaconColor.GREEN){
+//                sleep(100);
+//            }else/*Magenta*/{
+//                robot.simpleStrafe(0.4);
+//                sleep(1000);
+//                robot.simpleStrafe(0);
+           // }
             sleep(500);
 
 //        robot.simpleForward(-0.3);

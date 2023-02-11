@@ -259,8 +259,8 @@ public class TeleOp extends LinearOpMode {
                 robot.leftPulley.setTargetPosition(0);
             }
             if (gamepad2.a && gamepad2.dpad_right) {
-                robot.rightAxis.setTargetPosition(800);
-                robot.leftAxis.setTargetPosition(800);
+                robot.rightAxis.setTargetPosition(1200);
+                robot.leftAxis.setTargetPosition(1200);
             }
             if (gamepad2.a && gamepad2.dpad_left) {
                 robot.rightAxis.setTargetPosition(0);
@@ -303,6 +303,7 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("Left direction", robot.leftAxis.getTargetPosition());
             telemetry.addData("Adjustment", adjustment);
             telemetry.addData("Spinner", robot.centerServo.getPosition());
+            telemetry.addData("Axis", robot.leftAxis.getTargetPosition());
 
 
 
