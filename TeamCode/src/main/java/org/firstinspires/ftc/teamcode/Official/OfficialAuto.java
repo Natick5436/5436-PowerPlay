@@ -101,7 +101,7 @@ public class OfficialAuto extends LinearOpMode
         sleep(1000);
 
         robot.simpleForward(0.3);
-        sleep(1250);
+        sleep(1310);
         robot.simpleForward(0);
         sleep(1500);
 

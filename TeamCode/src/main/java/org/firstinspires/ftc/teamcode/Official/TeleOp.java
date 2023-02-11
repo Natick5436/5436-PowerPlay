@@ -72,6 +72,7 @@ public class TeleOp extends LinearOpMode {
                 //CHANGES
             } else if (gamepad1.right_trigger>0 || gamepad1.left_trigger>0){
                 //robot.SimpleStrafe(drivePower * (gamepad1.right_trigger - gamepad1.left_trigger));
+                drivePower = 0.7;
                 robot.rB.setDirection(DcMotorSimple.Direction.FORWARD);
                 robot.lB.setDirection(DcMotorSimple.Direction.FORWARD);
                 robot.rF.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -91,6 +92,7 @@ public class TeleOp extends LinearOpMode {
                 robot.lB.setDirection(DcMotorSimple.Direction.FORWARD);
                 robot.rF.setDirection(DcMotorSimple.Direction.REVERSE);
                 robot.lF.setDirection(DcMotorSimple.Direction.FORWARD);
+                drivePower = 0.5;
             } else {
                 if (!bumperDown) {
                     robot.lF.setPower(-drivePower * gamepad1.left_stick_y);
@@ -165,15 +167,15 @@ public class TeleOp extends LinearOpMode {
 
                 }
 
-                if (System.currentTimeMillis() - liftTime > 500) {
+                if (System.currentTimeMillis() - liftTime > 400) {
                     //int armEncoderDiff = robot.getArmEncoderDiff();
-                    if(gamepad2.dpad_up /*&& leftPulleyPosition <= 11000 /*+ armEncoderDiff*/){
+                    if(gamepad2.dpad_up && robot.leftPulley.getTargetPosition() <= 1200 /*+ armEncoderDiff*/){
                         //change the 400s to change how much to pulleys goe each time
                         robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() + 400);
                         robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() + 400);
                         liftTime = System.currentTimeMillis();
 
-                    }else if(gamepad2.dpad_down /*&& leftPulleyPosition >= 20 /* + armEncoderDiff*/){
+                    }else if(gamepad2.dpad_down && robot.leftPulley.getTargetPosition() >= 20 /* + armEncoderDiff*/){
                         robot.leftPulley.setTargetPosition(robot.leftPulley.getTargetPosition() - 400);
                         robot.rightPulley.setTargetPosition(robot.rightPulley.getTargetPosition() - 400);
                         liftTime = System.currentTimeMillis();
@@ -232,12 +234,12 @@ public class TeleOp extends LinearOpMode {
 
                     if(gamepad2.dpad_left ){//&& leftAxisPosition < 12000 /*+ armEncoderDiff*/){
                         robot.leftAxis.setTargetPosition(robot.leftAxis.getTargetPosition() + 20);
-                        robot.rightAxis.setTargetPosition(robot.rightAxis.getTargetPosition() + 200);
+                        robot.rightAxis.setTargetPosition(robot.rightAxis.getTargetPosition() + 20);
                         angleTime = System.currentTimeMillis();
 
                     }else if(gamepad2.dpad_right){
                         robot.leftAxis.setTargetPosition(robot.leftAxis.getTargetPosition() - 20);
-                        robot.rightAxis.setTargetPosition(robot.rightAxis.getTargetPosition() - 200);
+                        robot.rightAxis.setTargetPosition(robot.rightAxis.getTargetPosition() - 20);
                         angleTime = System.currentTimeMillis();
 
                     }
@@ -246,22 +248,23 @@ public class TeleOp extends LinearOpMode {
 
             if (gamepad2.a && gamepad2.dpad_up){
                 robot.clawSpinner.setPosition(0);
-                robot.rightPulley.setTargetPosition(11400);
-                robot.leftPulley.setTargetPosition(11400);
+                robot.rightPulley.setTargetPosition(800);
+                robot.leftPulley.setTargetPosition(800);
+
             }
 
             if (gamepad2.a && gamepad2.dpad_down) {
-                robot.clawSpinner.setPosition(0);
-                robot.rightPulley.setTargetPosition(3200);
-                robot.leftPulley.setTargetPosition(3200);
+                robot.clawSpinner.setPosition(0.175);
+                robot.rightPulley.setTargetPosition(0);
+                robot.leftPulley.setTargetPosition(0);
             }
             if (gamepad2.a && gamepad2.dpad_right) {
-                robot.rightAxis.setTargetPosition(2200);
-                robot.leftAxis.setTargetPosition(2200);
-            }
-            if (gamepad2.a && gamepad2.dpad_left) {
                 robot.rightAxis.setTargetPosition(800);
                 robot.leftAxis.setTargetPosition(800);
+            }
+            if (gamepad2.a && gamepad2.dpad_left) {
+                robot.rightAxis.setTargetPosition(0);
+                robot.leftAxis.setTargetPosition(0);
             }
 //            if (gamepad2.y) {
 //                robot.leftPulley.setTargetPosition(0);

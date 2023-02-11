@@ -29,8 +29,8 @@ public class NewBeaconDetector {
         this.upperMagenta = upperMagenta;
     }
 
-    public Scalar lowerMagenta = new Scalar(80, 0, 130);
-    public Scalar upperMagenta = new Scalar(215, 70, 130);
+    public Scalar lowerMagenta = new Scalar(80, 0, 50);
+    public Scalar upperMagenta = new Scalar(275, 100, 170);
     public Scalar lowerGreen = new Scalar(30, 40, 70);//30, 40, 70
     public Scalar upperGreen = new Scalar(110, 255, 255);
     public Scalar lowerOrange = new Scalar(70, 30, 0);//70, 30, 0

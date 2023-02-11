@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Official;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Robots.Mark11;
@@ -15,7 +16,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import java.sql.Array;
 
 //This auto is funni and completely stupid and got us 60 points
-@Autonomous(name="TesterAuto",group="Autonomous")
+@Disabled
 public class Auto extends LinearOpMode {
     Mark13 robot;
 
